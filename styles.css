@@ -314,11 +314,10 @@ img {
 
 .headshot-wrap {
     width: min(100%, 420px);
-    aspect-ratio: 1 / 1;
     background: linear-gradient(145deg, rgba(15, 118, 110, 0.19), rgba(201, 112, 0, 0.16));
     border: 1px solid rgba(255, 255, 255, 0.65);
     box-shadow: var(--shadow-strong);
-    border-radius: 50%;
+    border-radius: var(--radius-lg);
     padding: 10px;
     margin-inline: auto;
     overflow: hidden;
@@ -326,10 +325,8 @@ img {
 
 .headshot-wrap img {
     width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    object-fit: cover;
-    object-position: center 24%;
+    height: auto;
+    border-radius: 20px;
     border: 0;
 }
 
@@ -572,8 +569,8 @@ img {
 .hobby-card img {
     border-radius: var(--radius-md);
     width: 100%;
-    aspect-ratio: 16 / 10;
-    object-fit: cover;
+    height: auto;
+    object-fit: contain;
     margin-bottom: 0.8rem;
 }
 
@@ -697,7 +694,7 @@ img {
     }
 
     .headshot-wrap {
-        width: min(100%, 330px);
+        width: min(100%, 360px);
     }
 
     .panel {
