@@ -309,23 +309,28 @@ img {
 .hero-media {
     display: grid;
     gap: 1.1rem;
+    justify-items: center;
 }
 
 .headshot-wrap {
+    width: min(100%, 420px);
+    aspect-ratio: 1 / 1;
     background: linear-gradient(145deg, rgba(15, 118, 110, 0.19), rgba(201, 112, 0, 0.16));
     border: 1px solid rgba(255, 255, 255, 0.65);
     box-shadow: var(--shadow-strong);
-    border-radius: var(--radius-lg);
-    padding: 1.1rem;
+    border-radius: 50%;
+    padding: 10px;
+    margin-inline: auto;
+    overflow: hidden;
 }
 
 .headshot-wrap img {
     width: 100%;
-    aspect-ratio: 1 / 1;
+    height: 100%;
     border-radius: 50%;
     object-fit: cover;
-    object-position: top center;
-    border: 4px solid rgba(255, 255, 255, 0.85);
+    object-position: center 24%;
+    border: 0;
 }
 
 .hero-metrics {
@@ -689,6 +694,10 @@ img {
 
     .hero-metrics {
         grid-template-columns: 1fr;
+    }
+
+    .headshot-wrap {
+        width: min(100%, 330px);
     }
 
     .panel {
