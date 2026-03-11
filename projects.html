@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Projects by Kamruzzaman Kamrul — AI systems, ML tools, and applied engineering." />
+  <title>Projects | Kamruzzaman Kamrul</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div class="noise" aria-hidden="true"></div>
+
+<nav class="nav" id="nav">
+  <a class="nav-logo" href="index.html">
+    <span class="logo-mark">KK</span>
+    <span class="logo-text">Kamrul</span>
+  </a>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="research.html">Research</a></li>
+    <li><a href="projects.html" class="active">Projects</a></li>
+    <li><a href="blog.html">Writing</a></li>
+    <li><a href="life.html">Life</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="theme-btn" id="theme-toggle" aria-label="Toggle dark mode">
+      <span class="theme-icon sun">☀</span>
+      <span class="theme-icon moon">◑</span>
+    </button>
+    <button class="nav-burger" id="nav-burger" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<section class="page-hero">
+  <div class="hero-orb orb-1" aria-hidden="true"></div>
+  <div class="page-hero-inner container">
+    <div class="section-label"><span class="label-line"></span><span>Projects</span></div>
+    <h1>Things I've Built</h1>
+    <p>A mix of AI experiments, applied tools, and systems that started as ideas and
+       became real things. From multi-agent debate platforms to geotechnical automation.</p>
+  </div>
+</section>
+
+<!-- FEATURED -->
+<section class="section" style="background:var(--bg)">
+  <div class="container">
+    <div class="section-label"><span class="label-line"></span><span>Featured</span></div>
+    <a href="https://github.com/kamrul28890/debatebot" target="_blank" rel="noopener" class="project-card-featured" style="max-width:100%;margin-bottom:2rem;display:grid;grid-template-columns:1.2fr 1fr" class="reveal">
+      <div class="project-card-featured-media" style="aspect-ratio:auto;min-height:320px">
+        <img src="assets/debatebot.png" alt="Debate Intelligence Platform" loading="lazy" style="width:100%;height:100%;object-fit:cover" />
+      </div>
+      <div class="project-card-featured-body" style="padding:2rem">
+        <span class="proj-badge">Featured Project</span>
+        <h3 style="font-size:1.4rem;margin-bottom:0.8rem">Multi-Agent Debate Intelligence Platform</h3>
+        <p style="font-size:0.92rem;line-height:1.7;color:var(--ink2);margin-bottom:1rem">
+          An AI debate simulation platform engineered with compact LLM infrastructure and voice adaptation.
+          The system uses Qwen 2.5 0.5B for controlled debate orchestration, supporting both policy-style
+          and academic-style argumentation with character-specific voice delivery.
+        </p>
+        <ul style="margin:0 0 1rem 1rem;display:grid;gap:0.4rem;font-size:0.88rem;color:var(--ink2)">
+          <li>Integrated Qwen 2.5 0.5B for multi-agent response generation</li>
+          <li>Voice cloning workflows for realistic, character-specific delivery</li>
+          <li>Structured agent roles for policy and academic debate formats</li>
+          <li>Rhetorical quality evaluation under constrained compute</li>
+        </ul>
+        <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+          <span class="focus-tags"><span>Qwen 2.5</span><span>Multi-Agent</span><span>Voice Cloning</span><span>LLM</span></span>
+        </div>
+      </div>
+    </a>
+
+    <!-- ALL PROJECTS GRID -->
+    <div class="section-label" style="margin-top:1rem"><span class="label-line"></span><span>All Projects</span></div>
+    <div class="projects-grid reveal">
+
+      <div class="project-full-card">
+        <div class="pfc-header">
+          <span class="pfc-icon">🔍</span>
+          <h3 class="pfc-title">RAG Finance Assistant</h3>
+        </div>
+        <p class="pfc-desc">Retrieval-augmented generation system for financial document QA. Combines dense vector embeddings with LLM-based answer synthesis to enable natural language queries over complex financial reports and filings.</p>
+        <div class="pfc-footer">
+          <div class="pfc-tags">
+            <span class="pfc-tag">RAG</span>
+            <span class="pfc-tag">Embeddings</span>
+            <span class="pfc-tag">LLM</span>
+          </div>
+          <a href="https://github.com/kamrul28890/rag-finance-assistant" target="_blank" rel="noopener" class="pfc-link">GitHub ↗</a>
+        </div>
+      </div>
+
+      <div class="project-full-card">
+        <div class="pfc-header">
+          <span class="pfc-icon">🖼️</span>
+          <h3 class="pfc-title">Learnable Image Alignment & Scale-Space Blob Detection</h3>
+        </div>
+        <p class="pfc-desc">Computer vision implementation focused on robust feature extraction through scale-aware blob detection and learnable geometric alignment. Designed for applications requiring reliable cross-image correspondence under varying conditions.</p>
+        <div class="pfc-footer">
+          <div class="pfc-tags">
+            <span class="pfc-tag">PyTorch</span>
+            <span class="pfc-tag">Computer Vision</span>
+            <span class="pfc-tag">Feature Extraction</span>
+          </div>
+          <a href="https://github.com/kamrul28890/Learnable-Image-Alignment-and-Scale-Space-Blob-Detection" target="_blank" rel="noopener" class="pfc-link">GitHub ↗</a>
+        </div>
+      </div>
+
+      <div class="project-full-card">
+        <div class="pfc-header">
+          <span class="pfc-icon">🔬</span>
+          <h3 class="pfc-title">RuView</h3>
+        </div>
+        <p class="pfc-desc">Review and analysis workflow tooling designed for systematic ML experimentation. Streamlines the process of tracking experiments, organizing results, and iterating on model configurations in research workflows.</p>
+        <div class="pfc-footer">
+          <div class="pfc-tags">
+            <span class="pfc-tag">Python</span>
+            <span class="pfc-tag">ML Tooling</span>
+          </div>
+          <a href="https://github.com/kamrul28890/RuView" target="_blank" rel="noopener" class="pfc-link">GitHub ↗</a>
+        </div>
+      </div>
+
+      <div class="project-full-card">
+        <div class="pfc-header">
+          <span class="pfc-icon">📡</span>
+          <h3 class="pfc-title">Social Media Scraping APIs</h3>
+        </div>
+        <p class="pfc-desc">API-centric data pipeline for extracting and structuring social media signals for downstream NLP and analytics tasks. Supports multiple platforms with configurable extraction, rate limiting, and storage backends.</p>
+        <div class="pfc-footer">
+          <div class="pfc-tags">
+            <span class="pfc-tag">Python</span>
+            <span class="pfc-tag">APIs</span>
+            <span class="pfc-tag">Data Pipelines</span>
+          </div>
+          <a href="https://github.com/kamrul28890/social-media-scraping-apis" target="_blank" rel="noopener" class="pfc-link">GitHub ↗</a>
+        </div>
+      </div>
+
+      <div class="project-full-card">
+        <div class="pfc-header">
+          <span class="pfc-icon">🌍</span>
+          <h3 class="pfc-title">Atterberg Limit Chart Generator</h3>
+        </div>
+        <p class="pfc-desc">Automated soil classification charting workflow for geotechnical analysis. Generates Casagrande plasticity charts and USCS classification reports from raw Atterberg limit data — bridging civil engineering with Python automation.</p>
+        <div class="pfc-footer">
+          <div class="pfc-tags">
+            <span class="pfc-tag">Python</span>
+            <span class="pfc-tag">Geotechnical</span>
+            <span class="pfc-tag">Data Viz</span>
+          </div>
+          <a href="https://github.com/kamrul28890/atterberg-limit-chart" target="_blank" rel="noopener" class="pfc-link">GitHub ↗</a>
+        </div>
+      </div>
+
+      <div class="project-full-card">
+        <div class="pfc-header">
+          <span class="pfc-icon">🎮</span>
+          <h3 class="pfc-title">The Last Signal Game</h3>
+        </div>
+        <p class="pfc-desc">A systems-oriented game prototype built in Pygame with OOP architecture, gameplay state management, and custom event handling. A fun experiment in building interactive systems from scratch — because engineers need hobbies too.</p>
+        <div class="pfc-footer">
+          <div class="pfc-tags">
+            <span class="pfc-tag">Python</span>
+            <span class="pfc-tag">Pygame</span>
+            <span class="pfc-tag">OOP</span>
+          </div>
+          <a href="https://github.com/kamrul28890/the-last-signal-game" target="_blank" rel="noopener" class="pfc-link">GitHub ↗</a>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="margin-top:2rem;text-align:center" class="reveal">
+      <a href="https://github.com/kamrul28890?tab=repositories" target="_blank" rel="noopener" class="btn btn-ghost">View All on GitHub ↗</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-left">
+      <span class="logo-mark">KK</span>
+      <div><p><strong>Kamruzzaman Kamrul</strong></p><p>PhD Researcher · Purdue University · West Lafayette, IN</p></div>
+    </div>
+    <nav class="footer-nav">
+      <a href="research.html">Research</a>
+      <a href="projects.html">Projects</a>
+      <a href="blog.html">Writing</a>
+      <a href="life.html">Life</a>
+      <a href="assets/kamrul_resume.pdf" target="_blank" rel="noopener">CV ↗</a>
+    </nav>
+    <p class="footer-copy">© 2026 Kamruzzaman Kamrul</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
