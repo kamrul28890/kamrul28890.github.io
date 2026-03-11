@@ -70,7 +70,7 @@ function handleContactForm(e) {
   const subject = document.getElementById('cf-subject');
   if (!name || !email || !msg) return;
 
-  const mailto = `mailto:kamrul28890@gmail.com?subject=${encodeURIComponent((subject?.value || 'Website Inquiry') + ' — from ' + name.value)}&body=${encodeURIComponent(msg.value + '\n\nFrom: ' + name.value + '\nEmail: ' + email.value)}`;
+  const mailto = `mailto:kamrul28890@gmail.com?subject=${encodeURIComponent((subject?.value || 'Website Inquiry') + ' - from ' + name.value)}&body=${encodeURIComponent(msg.value + '\n\nFrom: ' + name.value + '\nEmail: ' + email.value)}`;
   window.location.href = mailto;
 
   if (status) {
