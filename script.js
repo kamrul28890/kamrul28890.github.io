@@ -1,32 +1,52 @@
 /* ═══ THEME TOGGLE ═══ */
 const themeToggle = document.getElementById('theme-toggle');
 const html = document.documentElement;
+const setTheme = (theme) => {
+  html.setAttribute('data-theme', theme);
+  if (themeToggle) themeToggle.setAttribute('aria-pressed', String(theme === 'dark'));
+};
 
 const saved = localStorage.getItem('theme');
-if (saved) html.setAttribute('data-theme', saved);
-else if (window.matchMedia('(prefers-color-scheme: dark)').matches) html.setAttribute('data-theme', 'dark');
+if (saved) setTheme(saved);
+else if (window.matchMedia('(prefers-color-scheme: dark)').matches) setTheme('dark');
+else setTheme('light');
 
 themeToggle && themeToggle.addEventListener('click', () => {
   const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-  html.setAttribute('data-theme', next);
+  setTheme(next);
   localStorage.setItem('theme', next);
 });
 
 /* ═══ MOBILE NAV ═══ */
 const burger = document.getElementById('nav-burger');
 const navLinks = document.getElementById('nav-links');
+const closeNav = () => {
+  if (!burger || !navLinks) return;
+  burger.setAttribute('aria-expanded', 'false');
+  navLinks.classList.remove('open');
+};
+
 burger && burger.addEventListener('click', () => {
+  if (!navLinks) return;
   const expanded = burger.getAttribute('aria-expanded') === 'true';
   burger.setAttribute('aria-expanded', String(!expanded));
-  navLinks && navLinks.classList.toggle('open', !expanded);
+  navLinks.classList.toggle('open', !expanded);
 });
 
 // Close on link click
 navLinks && navLinks.querySelectorAll('a').forEach(a => {
-  a.addEventListener('click', () => {
-    burger && burger.setAttribute('aria-expanded', 'false');
-    navLinks.classList.remove('open');
-  });
+  a.addEventListener('click', closeNav);
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeNav();
+});
+
+document.addEventListener('click', (e) => {
+  if (!burger || !navLinks) return;
+  if (!navLinks.classList.contains('open')) return;
+  if (navLinks.contains(e.target) || burger.contains(e.target)) return;
+  closeNav();
 });
 
 /* ═══ NAV SCROLL SHADOW ═══ */
@@ -41,8 +61,10 @@ navLinks && navLinks.querySelectorAll('a').forEach(a => {
   const href = a.getAttribute('href');
   if (href === currentPage || (currentPage === '' && href === 'index.html')) {
     a.classList.add('active');
+    a.setAttribute('aria-current', 'page');
   } else {
     a.classList.remove('active');
+    a.removeAttribute('aria-current');
   }
 });
 
@@ -79,7 +101,7 @@ function handleContactForm(e) {
     setTimeout(() => { if (status) status.textContent = ''; }, 4000);
   }
 }
-window.handleContactForm = handleContactForm;
+document.getElementById('contact-form')?.addEventListener('submit', handleContactForm);
 
 /* ═══ SMOOTH ANCHOR SCROLL ═══ */
 document.querySelectorAll('a[href^="#"]').forEach(a => {

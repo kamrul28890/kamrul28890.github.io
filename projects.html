@@ -4,13 +4,29 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Projects by Kamruzzaman Kamrul - AI systems, ML tools, and applied engineering." />
+  <meta name="author" content="Kamruzzaman Kamrul" />
+  <meta name="theme-color" content="#f5f4f0" />
+  <meta name="color-scheme" content="light dark" />
   <title>Projects | Kamruzzaman Kamrul</title>
+  <link rel="canonical" href="https://kamrul28890.github.io/projects.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Kamruzzaman Kamrul" />
+  <meta property="og:title" content="Projects | Kamruzzaman Kamrul" />
+  <meta property="og:description" content="AI experiments, applied tools, and systems built by Kamruzzaman Kamrul." />
+  <meta property="og:url" content="https://kamrul28890.github.io/projects.html" />
+  <meta property="og:image" content="https://kamrul28890.github.io/assets/debatebot.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Projects | Kamruzzaman Kamrul" />
+  <meta name="twitter:description" content="AI experiments, applied tools, and systems built by Kamruzzaman Kamrul." />
+  <meta name="twitter:image" content="https://kamrul28890.github.io/assets/debatebot.png" />
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to content</a>
 <div class="noise" aria-hidden="true"></div>
 
 <nav class="nav" id="nav">
@@ -27,15 +43,17 @@
     <li><a href="index.html#contact">Contact</a></li>
   </ul>
   <div class="nav-right">
-    <button class="theme-btn" id="theme-toggle" aria-label="Toggle dark mode">
-      <span class="theme-icon sun">☀</span>
-      <span class="theme-icon moon">◑</span>
+    <button type="button" class="theme-btn" id="theme-toggle" aria-label="Toggle dark mode" aria-pressed="false">
+      <span class="theme-icon sun" aria-hidden="true">☀</span>
+      <span class="theme-icon moon" aria-hidden="true">◑</span>
     </button>
-    <button class="nav-burger" id="nav-burger" aria-label="Menu" aria-expanded="false">
+    <button type="button" class="nav-burger" id="nav-burger" aria-label="Menu" aria-expanded="false" aria-controls="nav-links">
       <span></span><span></span>
     </button>
   </div>
 </nav>
+
+<main id="main-content" tabindex="-1">
 
 <section class="page-hero">
   <div class="hero-orb orb-1" aria-hidden="true"></div>
@@ -51,25 +69,25 @@
 <section class="section" style="background:var(--bg)">
   <div class="container">
     <div class="section-label"><span class="label-line"></span><span>Featured</span></div>
-    <a href="https://github.com/kamrul28890/debatebot" target="_blank" rel="noopener" class="project-card-featured reveal" style="max-width:100%;margin-bottom:2rem;display:grid;grid-template-columns:1.2fr 1fr">
-      <div class="project-card-featured-media" style="aspect-ratio:auto;min-height:320px">
-        <img src="assets/debatebot.png" alt="Debate Intelligence Platform" loading="lazy" style="width:100%;height:100%;object-fit:cover" />
+    <a href="https://github.com/kamrul28890/debatebot" target="_blank" rel="noopener" class="project-card-featured project-card-featured--wide reveal">
+      <div class="project-card-featured-media project-card-featured-media--tall">
+        <img src="assets/debatebot.png" alt="Debate Intelligence Platform" loading="lazy" />
       </div>
-      <div class="project-card-featured-body" style="padding:2rem">
+      <div class="project-card-featured-body project-card-featured-body--spacious">
         <span class="proj-badge">Featured Project</span>
-        <h3 style="font-size:1.4rem;margin-bottom:0.8rem">Multi-Agent Debate Intelligence Platform</h3>
-        <p style="font-size:0.92rem;line-height:1.7;color:var(--ink2);margin-bottom:1rem">
+        <h3 class="project-card-featured-title-lg">Multi-Agent Debate Intelligence Platform</h3>
+        <p class="project-card-featured-copy-lg">
           An AI debate simulation platform engineered with compact LLM infrastructure and voice adaptation.
           The system uses Qwen 2.5 0.5B for controlled debate orchestration, supporting both policy-style
           and academic-style argumentation with character-specific voice delivery.
         </p>
-        <ul style="margin:0 0 1rem 1rem;display:grid;gap:0.4rem;font-size:0.88rem;color:var(--ink2)">
+        <ul class="project-feature-list">
           <li>Integrated Qwen 2.5 0.5B for multi-agent response generation</li>
           <li>Voice cloning workflows for realistic, character-specific delivery</li>
           <li>Structured agent roles for policy and academic debate formats</li>
           <li>Rhetorical quality evaluation under constrained compute</li>
         </ul>
-        <div style="display:flex;gap:0.5rem;flex-wrap:wrap">
+        <div class="project-card-featured-tags">
           <span class="focus-tags"><span>Qwen 2.5</span><span>Multi-Agent</span><span>Voice Cloning</span><span>LLM</span></span>
         </div>
       </div>
@@ -181,6 +199,8 @@
     </div>
   </div>
 </section>
+
+</main>
 
 <footer class="site-footer">
   <div class="container footer-inner">
