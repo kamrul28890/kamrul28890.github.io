@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Analyze Spotify Extended Streaming History exports privately in your browser." />
+  <title>Spotify Lifetime Stats | Web Analyzer</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <section class="hero">
+      <div>
+        <a class="back-link" href="../../spotify-lifetime-stats.html">Back to project</a>
+        <p class="eyebrow">Private browser analyzer</p>
+        <h1>Spotify Lifetime Stats</h1>
+        <p class="hero-copy">Drop your Spotify Extended Streaming History ZIP or JSON files. The analysis runs inside this browser tab; your listening history is not uploaded anywhere.</p>
+      </div>
+      <div class="hero-actions">
+        <button class="secondary" id="loadDemo" type="button">Load demo</button>
+        <button class="secondary" id="clearData" type="button">Clear</button>
+      </div>
+    </section>
+
+    <section class="drop-zone" id="dropZone">
+      <input id="fileInput" type="file" accept=".zip,.json,application/zip,application/json" multiple />
+      <div>
+        <strong>Choose or drop Spotify export files</strong>
+        <span>ZIP exports and loose JSON files are supported.</span>
+      </div>
+      <button type="button" id="chooseFiles">Choose files</button>
+    </section>
+
+    <section class="status-row" aria-live="polite">
+      <div id="statusText">No listening history loaded yet.</div>
+      <div class="status-actions">
+        <button class="secondary" data-export="tracks" type="button">Tracks CSV</button>
+        <button class="secondary" data-export="artists" type="button">Artists CSV</button>
+        <button class="secondary" data-export="albums" type="button">Albums CSV</button>
+        <button class="secondary" data-export="podcasts" type="button">Podcasts CSV</button>
+        <button class="secondary" data-export="plays" type="button">All Plays CSV</button>
+      </div>
+    </section>
+
+    <section class="metric-grid" id="metricGrid"></section>
+
+    <section class="chart-grid">
+      <article class="panel">
+        <div class="panel-head">
+          <h2>Listening Over Time</h2>
+          <span>Total minutes by month</span>
+        </div>
+        <div class="chart" id="timelineChart"></div>
+      </article>
+      <article class="panel">
+        <div class="panel-head">
+          <h2>Hour Of Day</h2>
+          <span>When listening happens</span>
+        </div>
+        <div class="chart compact" id="hourChart"></div>
+      </article>
+    </section>
+
+    <section class="chart-grid">
+      <article class="panel">
+        <div class="panel-head">
+          <h2>Weekday Rhythm</h2>
+          <span>Plays by day</span>
+        </div>
+        <div class="list" id="weekdayList"></div>
+      </article>
+      <article class="panel">
+        <div class="panel-head">
+          <h2>Streaks</h2>
+          <span>Daily listening patterns</span>
+        </div>
+        <div class="list" id="streakList"></div>
+      </article>
+    </section>
+
+    <section class="tabs" aria-label="Data views">
+      <button class="tab active" data-tab="tracks" type="button">Songs</button>
+      <button class="tab" data-tab="artists" type="button">Artists</button>
+      <button class="tab" data-tab="albums" type="button">Albums</button>
+      <button class="tab" data-tab="shows" type="button">Podcast Shows</button>
+      <button class="tab" data-tab="episodes" type="button">Episodes</button>
+      <button class="tab" data-tab="imports" type="button">Imports</button>
+    </section>
+
+    <section class="panel table-panel">
+      <div class="panel-head">
+        <div>
+          <h2 id="tableTitle">Songs</h2>
+          <span id="tableSubtitle">Music rankings exclude podcasts</span>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table id="dataTable"></table>
+      </div>
+    </section>
+
+    <section class="notes">
+      <p><strong>Privacy:</strong> files are read with browser APIs and never sent to a server. Closing or clearing the page removes the current analysis.</p>
+      <p><strong>Desktop app:</strong> use the Windows version for optional Spotify API enrichment and local SQLite persistence.</p>
+    </section>
+  </main>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

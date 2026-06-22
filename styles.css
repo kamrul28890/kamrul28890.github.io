@@ -743,6 +743,88 @@ h1, h2, h3, h4, h5 {
 .pfc-tag { font-family: 'DM Mono', monospace; font-size: 0.66rem; color: var(--ink3); }
 .pfc-link { font-size: 0.8rem; font-weight: 500; color: var(--brand); }
 
+.spotify-project-hero {
+  min-height: 100vh;
+  padding-top: calc(var(--nav-h) + 4rem);
+  padding-bottom: 4rem;
+  background:
+    radial-gradient(circle at 18% 20%, var(--brand-glow), transparent 28rem),
+    linear-gradient(135deg, var(--bg), var(--bg2));
+}
+
+.spotify-project-hero-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(360px, 1.1fr);
+  gap: 3rem;
+  align-items: center;
+}
+
+.spotify-project-copy h1 {
+  max-width: 9ch;
+  font-size: clamp(2.8rem, 8vw, 6rem);
+  letter-spacing: -0.02em;
+}
+
+.spotify-project-copy p {
+  max-width: 62ch;
+  margin-top: 1.2rem;
+  color: var(--ink2);
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.spotify-project-actions {
+  display: flex;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+  margin-top: 1.8rem;
+}
+
+.spotify-dashboard-preview {
+  overflow: hidden;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  background: var(--surface);
+  box-shadow: var(--shadow-lg);
+}
+
+.spotify-dashboard-preview img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.spotify-project-section {
+  background: var(--bg);
+}
+
+.spotify-project-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.spotify-info-panel {
+  min-height: 220px;
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.spotify-info-panel h2 {
+  margin-bottom: 0.8rem;
+  font-size: 1.2rem;
+}
+
+.spotify-info-panel p {
+  color: var(--ink2);
+  font-size: 0.92rem;
+  line-height: 1.7;
+}
+
 /* ═══════════════════════════════════════════════════
    BLOG PAGE
 ═══════════════════════════════════════════════════ */
@@ -799,12 +881,14 @@ h1, h2, h3, h4, h5 {
   .shifu-card img { width: 100%; height: 200px; }
   .lab-grid,
   .project-card-featured--wide,
+  .spotify-project-hero-inner,
   .mountains-intro-grid,
   .travel-grid { grid-template-columns: 1fr; }
   .mountains-intro-full { grid-column: auto; }
   .treks-grid { grid-template-columns: 1fr; }
   .project-card-featured-body--spacious { padding: 1.5rem; }
   .shifu-card--hero img { width: 100%; height: 240px; }
+  .spotify-project-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 768px) {
@@ -825,6 +909,9 @@ h1, h2, h3, h4, h5 {
   .scroll-hint { display: none; }
   .section { padding: 3.5rem 0; }
   .project-card-featured-title-lg { font-size: 1.2rem; }
+  .spotify-project-hero { padding-top: calc(var(--nav-h) + 2rem); }
+  .spotify-project-actions { flex-direction: column; }
+  .spotify-project-actions .btn { width: 100%; }
 }
 
 @media (max-width: 480px) {

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Spotify Lifetime Stats - a privacy-first web and desktop dashboard for Spotify listening history." />
+  <meta name="author" content="Kamruzzaman Kamrul" />
+  <meta name="theme-color" content="#f5f4f0" />
+  <meta name="color-scheme" content="light dark" />
+  <title>Spotify Lifetime Stats | Kamruzzaman Kamrul</title>
+  <link rel="canonical" href="https://kamrul28890.github.io/spotify-lifetime-stats.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Kamruzzaman Kamrul" />
+  <meta property="og:title" content="Spotify Lifetime Stats" />
+  <meta property="og:description" content="Analyze Spotify Extended Streaming History exports in a private browser dashboard or Windows desktop app." />
+  <meta property="og:url" content="https://kamrul28890.github.io/spotify-lifetime-stats.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Spotify Lifetime Stats" />
+  <meta name="twitter:description" content="A privacy-first dashboard for Spotify lifetime listening history." />
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to content</a>
+<div class="noise" aria-hidden="true"></div>
+
+<nav class="nav" id="nav">
+  <a class="nav-logo" href="index.html">
+    <span class="logo-mark">KK</span>
+    <span class="logo-text">Kamrul</span>
+  </a>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="research.html">Research</a></li>
+    <li><a href="projects.html" class="active">Projects</a></li>
+    <li><a href="blog.html">Writing</a></li>
+    <li><a href="life.html">Life</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <button type="button" class="theme-btn" id="theme-toggle" aria-label="Toggle dark mode" aria-pressed="false">
+      <span class="theme-icon sun" aria-hidden="true">☀</span>
+      <span class="theme-icon moon" aria-hidden="true">◑</span>
+    </button>
+    <button type="button" class="nav-burger" id="nav-burger" aria-label="Menu" aria-expanded="false" aria-controls="nav-links">
+      <span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<main id="main-content" tabindex="-1">
+  <section class="spotify-project-hero">
+    <div class="container spotify-project-hero-inner">
+      <div class="spotify-project-copy">
+        <div class="section-label"><span class="label-line"></span><span>Project</span></div>
+        <h1>Spotify Lifetime Stats</h1>
+        <p>A privacy-first analytics dashboard for Spotify Extended Streaming History. The web version analyzes ZIP and JSON exports directly in the browser; the Windows app adds local SQLite persistence and optional Spotify API enrichment.</p>
+        <div class="spotify-project-actions">
+          <a class="btn btn-fill" href="apps/spotify-lifetime-stats/">Launch Web Analyzer</a>
+          <a class="btn btn-ghost" href="https://github.com/kamrul28890/spotify-lifetime-stats/releases/latest/download/Spotify.Lifetime.Stats.Setup.1.0.0.exe" target="_blank" rel="noopener">Download Windows App</a>
+          <a class="btn btn-ghost" href="https://github.com/kamrul28890/spotify-lifetime-stats" target="_blank" rel="noopener">GitHub</a>
+        </div>
+      </div>
+      <figure class="spotify-dashboard-preview">
+        <img src="apps/spotify-lifetime-stats/preview.png" alt="Spotify Lifetime Stats web analyzer showing imported demo stats, charts, and top songs table" />
+      </figure>
+    </div>
+  </section>
+
+  <section class="section spotify-project-section">
+    <div class="container spotify-project-grid">
+      <article class="spotify-info-panel reveal">
+        <h2>What it does</h2>
+        <p>Users can load Spotify Extended Streaming History exports, then inspect lifetime totals, top songs, artists, albums, podcast shows, listening timelines, hourly patterns, streaks, and downloadable CSV summaries.</p>
+      </article>
+      <article class="spotify-info-panel reveal">
+        <h2>Privacy model</h2>
+        <p>The web analyzer reads files with browser APIs and does not upload listening history. The desktop app stores data locally on the user's machine and supports optional Spotify API enrichment.</p>
+      </article>
+      <article class="spotify-info-panel reveal">
+        <h2>Implementation</h2>
+        <p>The desktop app uses Node, SQLite, Electron, and an embedded local HTTP server. The web app is a static GitHub Pages-compatible port with browser-side ZIP parsing and aggregation logic.</p>
+      </article>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-left">
+      <span class="logo-mark">KK</span>
+      <div><p><strong>Kamruzzaman Kamrul</strong></p><p>PhD Researcher · Purdue University · West Lafayette, IN</p></div>
+    </div>
+    <nav class="footer-nav">
+      <a href="research.html">Research</a>
+      <a href="projects.html">Projects</a>
+      <a href="blog.html">Writing</a>
+      <a href="life.html">Life</a>
+      <a href="assets/kamrul_resume.pdf" target="_blank" rel="noopener">CV</a>
+    </nav>
+    <p class="footer-copy">© 2026 Kamruzzaman Kamrul</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
