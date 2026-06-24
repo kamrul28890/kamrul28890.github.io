@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
 import './App.css'
 
 type View = 'now' | 'matches' | 'groups' | 'bracket' | 'teams' | 'stats' | 'trivia'
@@ -423,14 +423,17 @@ function App() {
                   {computed.thirdPlace.map((row, index) => {
                     const team = data.teams.find((item) => item.id === row.team_id)
                     return (
-                      <div key={row.team_id} className={index === 7 ? 'cut-line' : ''}>
-                        <span>{index + 1}</span>
-                        {team?.flag && <img src={team.flag} alt="" />}
-                        <strong>{team?.name_en}</strong>
-                        <small>Group {row.group}</small>
-                        <b>{row.pts} pts</b>
-                        <em>{number(row.gd) > 0 ? '+' : ''}{row.gd}</em>
-                      </div>
+                      <Fragment key={row.team_id}>
+                        <div className="third-place-row">
+                          <span>{index + 1}</span>
+                          {team?.flag && <img src={team.flag} alt="" />}
+                          <strong>{team?.name_en}</strong>
+                          <small>Group {row.group}</small>
+                          <b>{row.pts} pts</b>
+                          <em>{number(row.gd) > 0 ? '+' : ''}{row.gd}</em>
+                        </div>
+                        {index === 7 && <div className="qualification-divider"><span>Qualification line</span></div>}
+                      </Fragment>
                     )
                   })}
                 </article>
@@ -465,7 +468,12 @@ function App() {
             <article className="third-place-card third-place-card--wide">
               {computed.thirdPlace.map((row, index) => {
                 const team = data.teams.find((item) => item.id === row.team_id)
-                return <div key={row.team_id} className={index === 7 ? 'cut-line' : ''}><span>{index + 1}</span>{team?.flag && <img src={team.flag} alt="" />}<strong>{team?.name_en}</strong><small>Group {row.group} · {row.mp} played</small><b>{row.pts} pts</b><em>{number(row.gd) > 0 ? '+' : ''}{row.gd} GD</em></div>
+                return (
+                  <Fragment key={row.team_id}>
+                    <div className="third-place-row"><span>{index + 1}</span>{team?.flag && <img src={team.flag} alt="" />}<strong>{team?.name_en}</strong><small>Group {row.group} · {row.mp} played</small><b>{row.pts} pts</b><em>{number(row.gd) > 0 ? '+' : ''}{row.gd} GD</em></div>
+                    {index === 7 && <div className="qualification-divider"><span>Qualification line</span></div>}
+                  </Fragment>
+                )
               })}
             </article>
           </section>

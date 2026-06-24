@@ -115,10 +115,10 @@ main { width: min(1500px, 100%); margin: 0 auto; padding: 0 clamp(18px, 4vw, 64p
 .split-section .section-heading { grid-template-columns: 1fr; gap: 5px; }
 
 .third-place-card { background: var(--panel); border: 1px solid var(--line); }
-.third-place-card > div { display: grid; grid-template-columns: 24px 28px minmax(0, 1fr) auto auto 32px; gap: 10px; align-items: center; min-height: 45px; padding: 7px 12px; border-bottom: 1px solid var(--line); }
-.third-place-card > div:last-child { border-bottom: 0; }
-.third-place-card > div.cut-line { border-bottom: 2px solid var(--green); }
-.third-place-card > div.cut-line::after { content: 'QUALIFICATION LINE'; position: absolute; }
+.third-place-row { display: grid; grid-template-columns: 24px 28px minmax(0, 1fr) auto auto 32px; gap: 10px; align-items: center; min-height: 45px; padding: 7px 12px; border-bottom: 1px solid var(--line); }
+.third-place-row:last-child { border-bottom: 0; }
+.qualification-divider { position: relative; height: 20px; border-top: 2px solid var(--green); background: rgba(185, 242, 39, .035); }
+.third-place-card .qualification-divider span { position: absolute; top: -10px; left: 12px; padding: 1px 8px; color: #07100f; background: var(--green); font: 700 .58rem 'DM Mono'; letter-spacing: .08em; text-transform: uppercase; border-radius: 2px; }
 .third-place-card img { width: 24px; height: 16px; object-fit: cover; }
 .third-place-card span, .third-place-card small, .third-place-card em { color: var(--dim); font-size: .7rem; font-style: normal; }
 .third-place-card b { color: var(--green); font-size: .74rem; }
@@ -249,7 +249,7 @@ footer a { color: var(--green); font-size: .75rem; }
   .pulse-grid article { border-right: 0; border-bottom: 1px solid var(--line); }
   .trivia-card--feature { grid-column: auto; }
   .toolbar { flex-direction: column; }
-  .third-place-card > div { grid-template-columns: 20px 24px 1fr auto; }
+  .third-place-row { grid-template-columns: 20px 24px 1fr auto; }
   .third-place-card small, .third-place-card em { display: none; }
   .story-banner { align-items: start; flex-direction: column; }
   .team-route { grid-template-columns: 1fr; }
