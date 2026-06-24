@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 import './App.css'
 
 type View = 'now' | 'matches' | 'groups' | 'bracket' | 'teams' | 'stats' | 'trivia'
@@ -75,6 +76,26 @@ const trivia = [
   { category: 'New pathway', title: 'Third place matters', text: 'The eight best third-placed teams join the top two from every group in the Round of 32.', tag: 'Format' },
   { category: 'Trophy', title: 'Six kilograms of gold', text: 'The current FIFA World Cup Trophy weighs 6.175 kilograms and is made from 18-carat gold.', tag: 'Trophy' },
   { category: 'The final', title: 'New York New Jersey', text: 'The 2026 champion will be crowned on July 19 at New York New Jersey Stadium.', tag: 'Final' },
+]
+
+const champions = [
+  { nation: 'Brazil', titles: 5, years: '1958 · 1962 · 1970 · 1994 · 2002', color: '#f6d34f' },
+  { nation: 'Germany', titles: 4, years: '1954 · 1974 · 1990 · 2014', color: '#e7ece9' },
+  { nation: 'Italy', titles: 4, years: '1934 · 1938 · 1982 · 2006', color: '#4f8cff' },
+  { nation: 'Argentina', titles: 3, years: '1978 · 1986 · 2022', color: '#7dd4ff' },
+  { nation: 'France', titles: 2, years: '1998 · 2018', color: '#5f72ff' },
+  { nation: 'Uruguay', titles: 2, years: '1930 · 1950', color: '#8ad7f8' },
+  { nation: 'England', titles: 1, years: '1966', color: '#f4f6ef' },
+  { nation: 'Spain', titles: 1, years: '2010', color: '#ff665c' },
+]
+
+const winnerTimeline = [
+  ['1930', 'Uruguay'], ['1934', 'Italy'], ['1938', 'Italy'], ['1950', 'Uruguay'],
+  ['1954', 'Germany'], ['1958', 'Brazil'], ['1962', 'Brazil'], ['1966', 'England'],
+  ['1970', 'Brazil'], ['1974', 'Germany'], ['1978', 'Argentina'], ['1982', 'Italy'],
+  ['1986', 'Argentina'], ['1990', 'Germany'], ['1994', 'Brazil'], ['1998', 'France'],
+  ['2002', 'Brazil'], ['2006', 'Italy'], ['2010', 'Spain'], ['2014', 'Germany'],
+  ['2018', 'France'], ['2022', 'Argentina'],
 ]
 
 const roundNames: Record<string, string> = {
@@ -266,6 +287,212 @@ function SectionHeading({ eyebrow, title, copy }: { eyebrow: string; title: stri
       </div>
     </div>
   )
+}
+
+function ChartFrame({ eyebrow, title, copy, children, className = '' }: { eyebrow: string; title: string; copy: string; children: ReactNode; className?: string }) {
+  return (
+    <article className={`viz-card ${className}`}>
+      <header><span>{eyebrow}</span><h3>{title}</h3><p>{copy}</p></header>
+      <div className="viz-card__body">{children}</div>
+    </article>
+  )
+}
+
+function GoalTimeline({ games, stadiums }: { games: Game[]; stadiums: Stadium[] }) {
+  const rows = [...games.reduce((map, game) => {
+    const label = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric' }).format(gameDate(game, stadiums))
+    map.set(label, (map.get(label) || 0) + number(game.home_score) + number(game.away_score))
+    return map
+  }, new Map<string, number>()).entries()]
+  const max = Math.max(...rows.map(([, goals]) => goals), 1)
+  const width = 760
+  const height = 250
+  const pad = 34
+  const points = rows.map(([label, goals], index) => ({
+    label,
+    goals,
+    x: pad + (index * (width - pad * 2)) / Math.max(rows.length - 1, 1),
+    y: height - pad - (goals / max) * (height - pad * 2),
+  }))
+  const line = points.map((point) => `${point.x},${point.y}`).join(' ')
+  const area = `${pad},${height - pad} ${line} ${width - pad},${height - pad}`
+  return (
+    <div className="svg-scroll">
+      <svg className="timeline-chart" viewBox={`0 0 ${width} ${height}`} role="img" aria-label="Goals scored on each tournament day">
+        {[0, .25, .5, .75, 1].map((ratio) => <line key={ratio} x1={pad} x2={width - pad} y1={pad + ratio * (height - pad * 2)} y2={pad + ratio * (height - pad * 2)} />)}
+        <polygon points={area} />
+        <polyline points={line} />
+        {points.map((point, index) => (
+          <g key={point.label}>
+            <circle cx={point.x} cy={point.y} r="5"><title>{point.label}: {point.goals} goals</title></circle>
+            <text x={point.x} y={height - 10} textAnchor="middle">{index % 2 === 0 || points.length < 8 ? point.label : ''}</text>
+            <text className="value-label" x={point.x} y={point.y - 12} textAnchor="middle">{point.goals}</text>
+          </g>
+        ))}
+      </svg>
+    </div>
+  )
+}
+
+function ScorelineMatrix({ games }: { games: Game[] }) {
+  const maxScore = Math.max(5, ...games.flatMap((game) => [number(game.home_score), number(game.away_score)]))
+  const scores = Array.from({ length: maxScore + 1 }, (_, index) => index)
+  const counts = new Map<string, number>()
+  games.forEach((game) => {
+    const key = `${number(game.home_score)}-${number(game.away_score)}`
+    counts.set(key, (counts.get(key) || 0) + 1)
+  })
+  const peak = Math.max(...counts.values(), 1)
+  return (
+    <div className="matrix-wrap">
+      <div className="matrix-axis">Away goals →</div>
+      <div className="score-matrix" style={{ gridTemplateColumns: `32px repeat(${scores.length}, minmax(34px, 1fr))` }}>
+        <span />
+        {scores.map((score) => <b key={`x-${score}`}>{score}</b>)}
+        {scores.map((home) => (
+          <Fragment key={`row-${home}`}>
+            <b>{home}</b>
+            {scores.map((away) => {
+              const count = counts.get(`${home}-${away}`) || 0
+              const intensity = count ? .18 + (count / peak) * .82 : .035
+              return <div key={`${home}-${away}`} style={{ '--heat': intensity } as CSSProperties}><span>{count || ''}</span><title>{home}–{away}: {count} match{count === 1 ? '' : 'es'}</title></div>
+            })}
+          </Fragment>
+        ))}
+      </div>
+      <div className="matrix-y-label">Home goals</div>
+    </div>
+  )
+}
+
+function AttackDefenseMap({ groups, teams }: { groups: Group[]; teams: Team[] }) {
+  const rows = groups.flatMap((group) => group.teams.map((row) => ({ ...row, group: group.name })))
+  const maxGoals = Math.max(...rows.flatMap((row) => [number(row.gf), number(row.ga)]), 1)
+  const width = 720
+  const height = 420
+  const pad = 54
+  const scaleX = (value: number) => pad + (value / maxGoals) * (width - pad * 2)
+  const scaleY = (value: number) => height - pad - (value / maxGoals) * (height - pad * 2)
+  const averageFor = rows.reduce((sum, row) => sum + number(row.gf), 0) / rows.length
+  const averageAgainst = rows.reduce((sum, row) => sum + number(row.ga), 0) / rows.length
+  return (
+    <div className="svg-scroll">
+      <svg className="scatter-chart" viewBox={`0 0 ${width} ${height}`} role="img" aria-label="Teams plotted by goals scored and conceded">
+        <rect x={pad} y={pad} width={width - pad * 2} height={height - pad * 2} />
+        <line className="average" x1={scaleX(averageFor)} x2={scaleX(averageFor)} y1={pad} y2={height - pad} />
+        <line className="average" x1={pad} x2={width - pad} y1={scaleY(averageAgainst)} y2={scaleY(averageAgainst)} />
+        <text className="quadrant" x={width - pad - 8} y={pad + 18} textAnchor="end">Dangerous + resilient</text>
+        <text className="quadrant" x={pad + 8} y={height - pad - 10}>Low-output zone</text>
+        <text className="axis-title" x={width / 2} y={height - 10} textAnchor="middle">Goals scored →</text>
+        <text className="axis-title" transform={`translate(16 ${height / 2}) rotate(-90)`} textAnchor="middle">Goals conceded →</text>
+        {rows.map((row) => {
+          const team = teams.find((item) => item.id === row.team_id)
+          const x = scaleX(number(row.gf))
+          const y = scaleY(number(row.ga))
+          return (
+            <g key={row.team_id} className="team-dot">
+              <circle cx={x} cy={y} r={6 + number(row.pts) * .7}><title>{team?.name_en}: {row.gf} scored, {row.ga} conceded, {row.pts} points</title></circle>
+              <text x={x + 10} y={y + 3}>{team?.fifa_code}</text>
+            </g>
+          )
+        })}
+      </svg>
+    </div>
+  )
+}
+
+function StadiumLoad({ games, stadiums }: { games: Game[]; stadiums: Stadium[] }) {
+  const rows = stadiums.map((stadium) => {
+    const fixtures = games.filter((game) => game.stadium_id === stadium.id)
+    return { stadium, fixtures: fixtures.length, completed: fixtures.filter(isFinished).length }
+  }).sort((a, b) => b.fixtures - a.fixtures)
+  const max = Math.max(...rows.map((row) => row.fixtures), 1)
+  return (
+    <div className="stadium-bars">
+      {rows.map(({ stadium, fixtures, completed }) => (
+        <div key={stadium.id}>
+          <span><strong>{stadium.city_en.split(' (')[0]}</strong><small>{stadium.capacity.toLocaleString()} seats</small></span>
+          <i><b style={{ width: `${(fixtures / max) * 100}%` }} /><em style={{ width: `${(completed / max) * 100}%` }} /></i>
+          <strong>{fixtures}</strong>
+        </div>
+      ))}
+      <footer><span><i className="scheduled-key" /> Scheduled</span><span><i className="played-key" /> Played</span></footer>
+    </div>
+  )
+}
+
+function QualificationBubbles({ rows, teams }: { rows: Array<GroupRow & { group: string }>; teams: Team[] }) {
+  const width = 760
+  const height = 270
+  const positions = rows.map((row, index) => {
+    const team = teams.find((item) => item.id === row.team_id)
+    return {
+      ...row,
+      team,
+      x: 42 + index * ((width - 84) / 11),
+      y: height - 42 - number(row.pts) * 48,
+      radius: 15 + Math.max(number(row.gd) + 4, 0) * 1.7,
+    }
+  })
+  return (
+    <div className="svg-scroll">
+      <svg className="qualification-chart" viewBox={`0 0 ${width} ${height}`} role="img" aria-label="Best third-place teams ranked by points and goal difference">
+        {[0, 1, 2, 3, 4].map((point) => <g key={point}><line x1="34" x2={width - 20} y1={height - 42 - point * 48} y2={height - 42 - point * 48} /><text x="10" y={height - 38 - point * 48}>{point}</text></g>)}
+        <line className="cutoff" x1={(positions[7].x + positions[8].x) / 2} x2={(positions[7].x + positions[8].x) / 2} y1="22" y2={height - 28} />
+        <text className="cutoff-label" x={(positions[7].x + positions[8].x) / 2 + 6} y="18">TOP 8 ADVANCE</text>
+        {positions.map((row, index) => (
+          <g key={row.team_id} className={index < 8 ? 'qualified-bubble' : 'outside-bubble'}>
+            <circle cx={row.x} cy={row.y} r={row.radius}><title>{row.team?.name_en}: {row.pts} points, {row.gd} goal difference</title></circle>
+            <text x={row.x} y={row.y + 3} textAnchor="middle">{row.team?.fifa_code}</text>
+            <text className="bubble-rank" x={row.x} y={height - 12} textAnchor="middle">{index + 1}</text>
+          </g>
+        ))}
+      </svg>
+    </div>
+  )
+}
+
+function ChampionsOrbit() {
+  const total = champions.reduce((sum, item) => sum + item.titles, 0)
+  let cursor = 0
+  return (
+    <div className="champions-viz">
+      <svg viewBox="0 0 440 440" role="img" aria-label="World Cup titles by nation">
+        <circle className="orbit-track" cx="220" cy="220" r="150" />
+        {champions.map((champion) => {
+          const circumference = 2 * Math.PI * 150
+          const length = (champion.titles / total) * circumference
+          const offset = -(cursor / total) * circumference
+          cursor += champion.titles
+          return <circle key={champion.nation} className="orbit-segment" cx="220" cy="220" r="150" stroke={champion.color} strokeDasharray={`${length - 4} ${circumference - length + 4}`} strokeDashoffset={offset}><title>{champion.nation}: {champion.titles} titles</title></circle>
+        })}
+        <text className="orbit-number" x="220" y="212" textAnchor="middle">22</text>
+        <text className="orbit-copy" x="220" y="238" textAnchor="middle">tournaments</text>
+      </svg>
+      <div className="champions-legend">{champions.map((champion) => <div key={champion.nation}><i style={{ background: champion.color }} /><span><strong>{champion.nation}</strong><small>{champion.years}</small></span><b>{champion.titles}</b></div>)}</div>
+    </div>
+  )
+}
+
+function WinnersRibbon() {
+  return (
+    <div className="winner-ribbon">
+      {winnerTimeline.map(([year, nation], index) => {
+        const champion = champions.find((item) => item.nation === nation)
+        return <div key={year} style={{ '--winner-color': champion?.color || '#b9f227' } as CSSProperties}><span>{year}</span><i /><strong>{nation}</strong>{index < winnerTimeline.length - 1 && <b />}</div>
+      })}
+    </div>
+  )
+}
+
+function RecordGlyphs() {
+  const records = [
+    { value: 16, unit: 'goals', label: 'Miroslav Klose', note: 'All-time scoring record', icon: '◎' },
+    { value: 3, unit: 'titles', label: 'Pelé', note: 'Only player with three', icon: '✦' },
+    { value: 11, unit: 'seconds', label: 'Hakan Şükür', note: 'Fastest World Cup goal', icon: '↯' },
+    { value: 13, unit: 'goals', label: 'France 1958', note: 'Just Fontaine in one edition', icon: '◉' },
+  ]
+  return <div className="record-glyphs">{records.map((record) => <article key={record.label}><div><span>{record.icon}</span><strong>{record.value}</strong><small>{record.unit}</small></div><h4>{record.label}</h4><p>{record.note}</p></article>)}</div>
 }
 
 function App() {
@@ -541,21 +768,57 @@ function App() {
               <article><span>Decisive matches</span><strong>{computed.completed.filter((game) => game.home_score !== game.away_score).length}</strong><small>not ending level</small></article>
               <article><span>Draws</span><strong>{computed.completed.filter((game) => game.home_score === game.away_score).length}</strong><small>after regulation</small></article>
             </div>
-            <SectionHeading eyebrow="Group performance" title="Goals by group" />
-            <div className="bar-chart">
-              {'ABCDEFGHIJKL'.split('').map((groupName) => {
-                const games = computed.completed.filter((game) => game.group === groupName)
-                const goals = games.reduce((sum, game) => sum + number(game.home_score) + number(game.away_score), 0)
-                const max = Math.max(...'ABCDEFGHIJKL'.split('').map((letter) => computed.completed.filter((game) => game.group === letter).reduce((sum, game) => sum + number(game.home_score) + number(game.away_score), 0)), 1)
-                return <div key={groupName}><span>Group {groupName}</span><i><b style={{ width: `${(goals / max) * 100}%` }} /></i><strong>{goals}</strong></div>
-              })}
+            <div className="visualization-intro">
+              <span>Live visual lab</span>
+              <h2>Read the tournament as shapes, movement and pressure.</h2>
+              <p>Every chart below recalculates when results or standings change. Hover or tap chart marks for exact values.</p>
             </div>
+            <div className="viz-grid">
+              <ChartFrame eyebrow="Tournament rhythm" title="Goals by match day" copy="The peaks and quiet days of the tournament so far." className="viz-card--wide">
+                <GoalTimeline games={computed.completed} stadiums={data.stadiums} />
+              </ChartFrame>
+              <ChartFrame eyebrow="Score fingerprints" title="Every final score" copy="Darker cells represent scorelines that have happened more often.">
+                <ScorelineMatrix games={computed.completed} />
+              </ChartFrame>
+              <ChartFrame eyebrow="Qualification pressure" title="The third-place bubble race" copy="Height is points. Bubble size reflects goal difference. The vertical line marks the current top-eight cutoff.">
+                <QualificationBubbles rows={computed.thirdPlace} teams={data.teams} />
+              </ChartFrame>
+              <ChartFrame eyebrow="Team identity" title="Attack versus resistance" copy="Right means more goals scored; higher means fewer conceded. Bubble size increases with points." className="viz-card--wide">
+                <AttackDefenseMap groups={data.groups} teams={data.teams} />
+              </ChartFrame>
+              <ChartFrame eyebrow="The host footprint" title="Matches by stadium" copy="Green shows each venue’s full tournament assignment; gold shows matches already played." className="viz-card--wide">
+                <StadiumLoad games={data.games} stadiums={data.stadiums} />
+              </ChartFrame>
+              <ChartFrame eyebrow="Group comparison" title="Goals by group" copy="A compact view of which groups are producing the most goals.">
+                <div className="bar-chart">
+                  {'ABCDEFGHIJKL'.split('').map((groupName) => {
+                    const games = computed.completed.filter((game) => game.group === groupName)
+                    const goals = games.reduce((sum, game) => sum + number(game.home_score) + number(game.away_score), 0)
+                    const max = Math.max(...'ABCDEFGHIJKL'.split('').map((letter) => computed.completed.filter((game) => game.group === letter).reduce((sum, game) => sum + number(game.home_score) + number(game.away_score), 0)), 1)
+                    return <div key={groupName}><span>Group {groupName}</span><i><b style={{ width: `${(goals / max) * 100}%` }} /></i><strong>{goals}</strong></div>
+                  })}
+                </div>
+              </ChartFrame>
+            </div>
+            <aside className="future-data-note"><span>Next data layer</span><strong>Goal Atlas · shot maps · xG · momentum · passing networks</strong><p>These require verified event coordinates and advanced match data. The interface is ready for them once the provider upgrade is connected.</p></aside>
           </section>
         )}
 
         {view === 'trivia' && (
           <section className="page-section">
             <SectionHeading eyebrow="Stories behind the numbers" title="World Cup trivia atlas" copy="Records, firsts, famous moments and details that make each match richer." />
+            <div className="trivia-visuals">
+              <ChartFrame eyebrow="The champions’ orbit" title="Who owns World Cup history?" copy="All 22 completed tournaments divided among only eight champions." className="viz-card--wide">
+                <ChampionsOrbit />
+              </ChartFrame>
+              <ChartFrame eyebrow="1930—2022" title="The winners ribbon" copy="A continuous visual history from Uruguay’s first triumph to Argentina’s third.">
+                <WinnersRibbon />
+              </ChartFrame>
+              <ChartFrame eyebrow="Record book" title="Four numbers that define the tournament" copy="Iconic benchmarks from scoring, speed and individual achievement.">
+                <RecordGlyphs />
+              </ChartFrame>
+            </div>
+            <div className="trivia-divider"><span>Explore the stories</span></div>
             <div className="trivia-grid">
               {trivia.map((item, index) => (
                 <article key={item.title} className={index % 5 === 0 ? 'trivia-card trivia-card--feature' : 'trivia-card'}>
