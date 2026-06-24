@@ -1,0 +1,47 @@
+name: Refresh World Cup fallback data
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 */4 * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: world-cup-data-refresh
+  cancel-in-progress: true
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the site
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: wc2026-app/package-lock.json
+
+      - name: Install application dependencies
+        working-directory: wc2026-app
+        run: npm ci
+
+      - name: Refresh snapshot and rebuild
+        working-directory: wc2026-app
+        run: npm run release
+
+      - name: Commit changed tournament data
+        run: |
+          if git diff --quiet; then
+            echo "No tournament changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add wc2026-app/public/data wc2026
+          git commit -m "Refresh World Cup tournament data"
+          git push

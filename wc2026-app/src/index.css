@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  color: #f4f6ef;
+  background: #07100f;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  --ink: #f4f6ef;
+  --muted: #9aaba3;
+  --dim: #61736b;
+  --green: #b9f227;
+  --green-dark: #87bd00;
+  --gold: #f6bf4f;
+  --red: #ff5f57;
+  --panel: #101b19;
+  --panel-2: #15231f;
+  --line: rgba(226, 240, 232, 0.11);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; min-width: 320px; min-height: 100vh; overflow-x: hidden; background: #07100f; }
+button, input { font: inherit; }
+button { cursor: pointer; }
+img { display: block; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
