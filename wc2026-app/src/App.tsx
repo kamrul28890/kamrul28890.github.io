@@ -129,7 +129,8 @@ const zoneByCity: Record<string, string> = {
 }
 
 function number(value: string | number | undefined) {
-  return Number(value || 0)
+  const parsed = Number(value)
+  return Number.isFinite(parsed) ? parsed : 0
 }
 
 function isFinished(game: Game) {
@@ -365,38 +366,37 @@ function ScorelineMatrix({ games }: { games: Game[] }) {
   )
 }
 
-function AttackDefenseMap({ groups, teams }: { groups: Group[]; teams: Team[] }) {
-  const rows = groups.flatMap((group) => group.teams.map((row) => ({ ...row, group: group.name })))
-  const maxGoals = Math.max(...rows.flatMap((row) => [number(row.gf), number(row.ga)]), 1)
-  const width = 720
-  const height = 420
-  const pad = 54
-  const scaleX = (value: number) => pad + (value / maxGoals) * (width - pad * 2)
-  const scaleY = (value: number) => height - pad - (value / maxGoals) * (height - pad * 2)
-  const averageFor = rows.reduce((sum, row) => sum + number(row.gf), 0) / rows.length
-  const averageAgainst = rows.reduce((sum, row) => sum + number(row.ga), 0) / rows.length
+function GroupBalancePanels({ groups, teams }: { groups: Group[]; teams: Team[] }) {
+  const maxGoals = Math.max(...groups.flatMap((group) => group.teams.flatMap((row) => [number(row.gf), number(row.ga)])), 1)
   return (
-    <div className="svg-scroll">
-      <svg className="scatter-chart" viewBox={`0 0 ${width} ${height}`} role="img" aria-label="Teams plotted by goals scored and conceded">
-        <rect x={pad} y={pad} width={width - pad * 2} height={height - pad * 2} />
-        <line className="average" x1={scaleX(averageFor)} x2={scaleX(averageFor)} y1={pad} y2={height - pad} />
-        <line className="average" x1={pad} x2={width - pad} y1={scaleY(averageAgainst)} y2={scaleY(averageAgainst)} />
-        <text className="quadrant" x={width - pad - 8} y={pad + 18} textAnchor="end">Dangerous + resilient</text>
-        <text className="quadrant" x={pad + 8} y={height - pad - 10}>Low-output zone</text>
-        <text className="axis-title" x={width / 2} y={height - 10} textAnchor="middle">Goals scored →</text>
-        <text className="axis-title" transform={`translate(16 ${height / 2}) rotate(-90)`} textAnchor="middle">Goals conceded →</text>
-        {rows.map((row) => {
-          const team = teams.find((item) => item.id === row.team_id)
-          const x = scaleX(number(row.gf))
-          const y = scaleY(number(row.ga))
-          return (
-            <g key={row.team_id} className="team-dot">
-              <circle cx={x} cy={y} r={6 + number(row.pts) * .7}><title>{team?.name_en}: {row.gf} scored, {row.ga} conceded, {row.pts} points</title></circle>
-              <text x={x + 10} y={y + 3}>{team?.fifa_code}</text>
-            </g>
-          )
-        })}
-      </svg>
+    <div className="balance-comparison">
+      <div className="balance-legend">
+        <span><i className="against-key" /> Goals conceded</span>
+        <span><i className="for-key" /> Goals scored</span>
+        <small>All bars use the same scale</small>
+      </div>
+      <div className="balance-groups">
+        {[...groups].sort((a, b) => a.name.localeCompare(b.name)).map((group) => (
+          <article key={group.name} className="balance-group">
+            <header><span>Group</span><strong>{group.name}</strong></header>
+            {group.teams.map((row) => {
+              const team = teams.find((item) => item.id === row.team_id)
+              return (
+                <div key={row.team_id} className="balance-row" title={`${team?.name_en}: ${row.gf} scored, ${row.ga} conceded, ${row.pts} points`}>
+                  <b>{row.ga}</b>
+                  <i className="against-bar"><span style={{ width: `${(number(row.ga) / maxGoals) * 100}%` }} /></i>
+                  <div>
+                    {team?.flag && <img src={team.flag} alt="" />}
+                    <span><strong>{team?.fifa_code}</strong><small>{team?.name_en}</small></span>
+                  </div>
+                  <i className="for-bar"><span style={{ width: `${(number(row.gf) / maxGoals) * 100}%` }} /></i>
+                  <b>{row.gf}</b>
+                </div>
+              )
+            })}
+          </article>
+        ))}
+      </div>
     </div>
   )
 }
@@ -783,8 +783,8 @@ function App() {
               <ChartFrame eyebrow="Qualification pressure" title="The third-place bubble race" copy="Height is points. Bubble size reflects goal difference. The vertical line marks the current top-eight cutoff.">
                 <QualificationBubbles rows={computed.thirdPlace} teams={data.teams} />
               </ChartFrame>
-              <ChartFrame eyebrow="Team identity" title="Attack versus resistance" copy="Right means more goals scored; higher means fewer conceded. Bubble size increases with points." className="viz-card--wide">
-                <AttackDefenseMap groups={data.groups} teams={data.teams} />
+              <ChartFrame eyebrow="Team balance" title="Scoring versus conceding" copy="Each group uses mirrored bars: goals conceded extend left in gold, while goals scored extend right in green. Every panel shares one scale, making comparisons direct." className="viz-card--wide">
+                <GroupBalancePanels groups={data.groups} teams={data.teams} />
               </ChartFrame>
               <ChartFrame eyebrow="The host footprint" title="Matches by stadium" copy="Green shows each venue’s full tournament assignment; gold shows matches already played." className="viz-card--wide">
                 <StadiumLoad games={data.games} stadiums={data.stadiums} />

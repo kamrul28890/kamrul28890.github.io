@@ -214,13 +214,29 @@ td img { width: 23px; height: 15px; object-fit: cover; }
 .score-matrix > div { aspect-ratio: 1; display: grid; place-items: center; color: color-mix(in srgb, var(--ink) calc(var(--heat) * 100%), transparent); background: rgba(185,242,39,var(--heat)); border: 1px solid rgba(185,242,39,.08); }
 .score-matrix > div span { font: 700 .7rem 'DM Mono'; }
 
-.scatter-chart > rect { fill: #0b1714; stroke: var(--line); }
-.scatter-chart .average { stroke: rgba(246,191,79,.42); stroke-width: 1; stroke-dasharray: 6 6; }
-.scatter-chart .quadrant { fill: var(--gold); font: 10px 'DM Mono'; text-transform: uppercase; }
-.scatter-chart .axis-title { fill: var(--dim); font: 10px 'DM Mono'; text-transform: uppercase; }
-.team-dot circle { fill: rgba(185,242,39,.72); stroke: #07100f; stroke-width: 2; transition: fill .2s; }
-.team-dot:hover circle { fill: var(--gold); }
-.team-dot text { fill: var(--ink); font: 700 9px 'DM Mono'; pointer-events: none; }
+.balance-comparison { display: grid; gap: 20px; }
+.balance-legend { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; color: var(--muted); font: .62rem 'DM Mono'; text-transform: uppercase; }
+.balance-legend span { display: flex; align-items: center; gap: 6px; }
+.balance-legend i { width: 24px; height: 8px; display: block; }
+.balance-legend .against-key { background: var(--gold); }
+.balance-legend .for-key { background: var(--green); }
+.balance-legend small { margin-left: auto; color: var(--dim); }
+.balance-groups { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.balance-group { min-width: 0; padding: 13px; background: #0a1513; border: 1px solid var(--line); }
+.balance-group > header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 11px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+.balance-group > header span { color: var(--dim); font: .58rem 'DM Mono'; text-transform: uppercase; }
+.balance-group > header strong { color: var(--green); font: 800 1.6rem/.8 'Barlow Condensed'; }
+.balance-row { display: grid; grid-template-columns: 12px minmax(24px, 1fr) minmax(92px, 1.2fr) minmax(24px, 1fr) 12px; align-items: center; gap: 5px; min-height: 38px; }
+.balance-row > b { color: var(--muted); font: 700 .68rem 'DM Mono'; text-align: center; }
+.balance-row > i { position: relative; height: 9px; background: rgba(255,255,255,.035); overflow: hidden; }
+.balance-row > i span { position: absolute; inset-block: 0; display: block; min-width: 2px; }
+.against-bar span { right: 0; background: var(--gold); }
+.for-bar span { left: 0; background: var(--green); }
+.balance-row > div { min-width: 0; display: flex; align-items: center; justify-content: center; gap: 6px; padding-inline: 4px; }
+.balance-row img { width: 20px; height: 13px; flex: 0 0 auto; object-fit: cover; }
+.balance-row > div > span { min-width: 0; display: grid; line-height: 1; }
+.balance-row > div strong { font: 700 .66rem 'DM Mono'; }
+.balance-row > div small { margin-top: 3px; color: var(--dim); font-size: .48rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 .stadium-bars { display: grid; gap: 8px; }
 .stadium-bars > div { display: grid; grid-template-columns: minmax(145px, 220px) 1fr 24px; align-items: center; gap: 12px; }
@@ -323,6 +339,7 @@ footer a { color: var(--green); font-size: .75rem; }
   .teams-grid { grid-template-columns: repeat(4, 1fr); }
   .team-route { grid-template-columns: repeat(2, 1fr); }
   .champions-viz { grid-template-columns: 1fr; }
+  .balance-groups { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 800px) {
@@ -340,6 +357,7 @@ footer a { color: var(--green); font-size: .75rem; }
   .trivia-card--feature { grid-column: span 2; }
   .viz-grid, .trivia-visuals { grid-template-columns: 1fr; }
   .viz-card--wide { grid-column: auto; }
+  .balance-legend small { width: 100%; margin-left: 0; }
   footer { grid-template-columns: 1fr; }
 }
 
@@ -363,4 +381,6 @@ footer a { color: var(--green); font-size: .75rem; }
   .visualization-intro { padding-left: 18px; }
   .stadium-bars > div { grid-template-columns: 110px 1fr 20px; }
   .record-glyphs { grid-template-columns: 1fr; }
+  .balance-groups { grid-template-columns: 1fr; }
+  .balance-row { grid-template-columns: 12px minmax(34px, 1fr) minmax(105px, 1.25fr) minmax(34px, 1fr) 12px; }
 }

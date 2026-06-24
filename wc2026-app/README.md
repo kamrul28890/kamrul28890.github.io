@@ -5,7 +5,7 @@ Source application for `https://kamrul28890.github.io/wc2026/`.
 ## Commands
 
 - `npm run dev` — start the source application.
-- `npm run data:update` — refresh the bundled fallback snapshot.
+- `npm run data:update` — refresh the bundled fallback snapshot with retry and graceful fallback.
 - `npm run build` — compile the production site into `../wc2026`.
 - `npm run release` — refresh data and build the production site.
 - `npm run lint` — run the source linter.
@@ -13,6 +13,8 @@ Source application for `https://kamrul28890.github.io/wc2026/`.
 ## Data design
 
 The browser requests the provisional community live feed once per minute. If that request fails, it uses the bundled JSON snapshot in `public/data`.
+
+The scheduled updater retries transient network and DNS failures. It downloads a complete batch before replacing any snapshot file. If the provider remains unavailable, the workflow emits a warning and rebuilds from the existing validated snapshot instead of failing.
 
 All rendering code consumes the local `TournamentData` model rather than provider-specific UI components. This keeps the frontend replaceable when the production Cloudflare Worker and licensed provider adapter are added.
 
