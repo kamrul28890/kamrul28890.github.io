@@ -1587,7 +1587,7 @@
     {
       "_id": "679c9c8a5749c4077500e073",
       "id": "73",
-      "home_team_id": "0",
+      "home_team_id": "2",
       "away_team_id": "5",
       "home_score": "0",
       "away_score": "0",
@@ -1603,6 +1603,8 @@
       "type": "r32",
       "home_team_label": "Runner-up Group A",
       "away_team_label": "Runner-up Group B",
+      "home_team_name_en": "South Africa",
+      "home_team_name_fa": "آفریقای جنوبی",
       "away_team_name_en": "Canada",
       "away_team_name_fa": "کانادا"
     },
@@ -1632,7 +1634,7 @@
       "_id": "679c9c8a5749c4077500e075",
       "id": "75",
       "home_team_id": "0",
-      "away_team_id": "0",
+      "away_team_id": "10",
       "home_score": "0",
       "away_score": "0",
       "home_scorers": "null",
@@ -1646,12 +1648,14 @@
       "time_elapsed": "notstarted",
       "type": "r32",
       "home_team_label": "Winner Group F",
-      "away_team_label": "Runner-up Group C"
+      "away_team_label": "Runner-up Group C",
+      "away_team_name_en": "Morocco",
+      "away_team_name_fa": "مراکش"
     },
     {
       "_id": "679c9c8a5749c4077500e076",
       "id": "76",
-      "home_team_id": "0",
+      "home_team_id": "9",
       "away_team_id": "0",
       "home_score": "0",
       "away_score": "0",
@@ -1666,7 +1670,9 @@
       "time_elapsed": "notstarted",
       "type": "r32",
       "home_team_label": "Winner Group C",
-      "away_team_label": "Runner-up Group F"
+      "away_team_label": "Runner-up Group F",
+      "home_team_name_en": "Brazil",
+      "home_team_name_fa": "برزیل"
     },
     {
       "_id": "679c9c8a5749c4077500e077",
