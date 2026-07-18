@@ -8,10 +8,14 @@ type Game = {
   id: string
   home_team_id: string
   away_team_id: string
-  home_team_name_en: string
-  away_team_name_en: string
+  home_team_name_en?: string
+  away_team_name_en?: string
+  home_team_label?: string
+  away_team_label?: string
   home_score: string
   away_score: string
+  home_penalty_score?: string
+  away_penalty_score?: string
   group: string
   matchday: string
   local_date: string
@@ -134,11 +138,12 @@ function number(value: string | number | undefined) {
 }
 
 function isFinished(game: Game) {
-  return game.finished === 'TRUE' || game.time_elapsed === 'finished'
+  return String(game.finished).toLowerCase() === 'true' || game.time_elapsed === 'finished'
 }
 
 function isLive(game: Game) {
-  return !isFinished(game) && game.time_elapsed !== 'notstarted' && Boolean(game.time_elapsed)
+  const elapsed = String(game.time_elapsed || '').toLowerCase()
+  return !isFinished(game) && elapsed !== 'notstarted' && elapsed !== 'finished' && elapsed !== 'null' && Boolean(elapsed)
 }
 
 function gameDate(game: Game, stadiums: Stadium[]) {
@@ -178,6 +183,19 @@ function teamFlag(teamId: string, teams: Team[]) {
   return teams.find((team) => team.id === teamId)?.flag
 }
 
+function displayTeamName(game: Game, side: 'home' | 'away', teams: Team[]) {
+  if (side === 'home') {
+    return game.home_team_name_en || teamName(game.home_team_id, teams, game.home_team_label || 'To be decided')
+  }
+  return game.away_team_name_en || teamName(game.away_team_id, teams, game.away_team_label || 'To be decided')
+}
+
+function hasPenaltyScore(game: Game) {
+  return game.home_penalty_score !== undefined
+    && game.away_penalty_score !== undefined
+    && (number(game.home_penalty_score) > 0 || number(game.away_penalty_score) > 0)
+}
+
 async function fetchJson<T>(url: string, timeout = 7000): Promise<T> {
   const controller = new AbortController()
   const timer = window.setTimeout(() => controller.abort(), timeout)
@@ -214,8 +232,9 @@ function MatchCard({ game, data, featured = false }: { game: Game; data: Tournam
   const stadium = data.stadiums.find((item) => item.id === game.stadium_id)
   const live = isLive(game)
   const finished = isFinished(game)
-  const home = game.home_team_name_en || teamName(game.home_team_id, data.teams)
-  const away = game.away_team_name_en || teamName(game.away_team_id, data.teams)
+  const home = displayTeamName(game, 'home', data.teams)
+  const away = displayTeamName(game, 'away', data.teams)
+  const penalties = hasPenaltyScore(game)
   return (
     <article className={`match-card ${featured ? 'match-card--featured' : ''} ${live ? 'is-live' : ''}`}>
       <div className="match-card__meta">
@@ -229,7 +248,10 @@ function MatchCard({ game, data, featured = false }: { game: Game; data: Tournam
         </div>
         <div className="score">
           {finished || live ? (
-            <><strong>{number(game.home_score)}</strong><i>–</i><strong>{number(game.away_score)}</strong></>
+            <>
+              <div className="score__main"><strong>{number(game.home_score)}</strong><i>-</i><strong>{number(game.away_score)}</strong></div>
+              {penalties && <small>pens {number(game.home_penalty_score)}-{number(game.away_penalty_score)}</small>}
+            </>
           ) : <span>vs</span>}
         </div>
         <div className="side side--away">
@@ -557,8 +579,8 @@ function App() {
 
   const visibleMatches = computed.sortedGames.filter((game) => {
     if (matchFilter === 'completed' && !isFinished(game)) return false
-    if (matchFilter === 'upcoming' && isFinished(game)) return false
-    const haystack = `${game.home_team_name_en} ${game.away_team_name_en} ${game.group}`.toLowerCase()
+    if (matchFilter === 'upcoming' && (isFinished(game) || isLive(game))) return false
+    const haystack = `${displayTeamName(game, 'home', data.teams)} ${displayTeamName(game, 'away', data.teams)} ${game.home_team_label || ''} ${game.away_team_label || ''} ${game.group}`.toLowerCase()
     return haystack.includes(query.toLowerCase())
   })
 
@@ -571,7 +593,20 @@ function App() {
     ? computed.sortedGames.filter((game) => game.home_team_id === selectedTeam || game.away_team_id === selectedTeam)
     : []
 
-  const currentStage = computed.completed.length < 72 ? 'Group stage' : computed.completed.length < 104 ? 'Knockout stage' : 'Tournament complete'
+  const remainingMatches = Math.max(104 - computed.completed.length, 0)
+  const currentMatchNumber = Math.min(computed.completed.length + computed.live.length + 1, 104)
+  const currentStage = computed.completed.length >= 104
+    ? 'Tournament complete'
+    : computed.completed.length >= 102
+      ? 'Final weekend'
+      : computed.completed.length < 72
+        ? 'Group stage'
+        : 'Knockout stage'
+  const thirdPlaceEyebrow = computed.completed.length >= 72 ? 'Group-stage record' : 'Qualification watch'
+  const thirdPlaceTitle = computed.completed.length >= 72 ? 'The best third-place finishers' : 'The third-place line'
+  const thirdPlaceCopy = computed.completed.length >= 72
+    ? 'The table that decided the final eight Round of 32 places.'
+    : 'Eight of the twelve third-placed teams advance.'
 
   return (
     <div className="app-shell">
@@ -596,10 +631,10 @@ function App() {
           <>
             <section className="hero-panel">
               <div className="hero-copy">
-                <div className="stage-pill"><span /> {currentStage} · Match {computed.completed.length + 1} of 104</div>
+                <div className="stage-pill"><span /> {currentStage} · Match {currentMatchNumber} of 104</div>
                 <p className="kicker">The tournament, explained visually</p>
                 <h1>See what matters <em>right now.</em></h1>
-                <p className="hero-lede">Recent results, the next kickoffs, qualification pressure and the stories behind the world’s biggest football tournament.</p>
+                <p className="hero-lede">Recent results, the next kickoffs, bracket paths and the stories behind the world’s biggest football tournament.</p>
                 <div className="hero-actions">
                   <button onClick={() => setView('matches')}>Explore all matches</button>
                   <button className="secondary" onClick={() => setView('groups')}>Check qualification</button>
@@ -612,7 +647,7 @@ function App() {
                   <span>{Math.round((computed.completed.length / 104) * 100)}%</span>
                   <small>complete</small>
                 </div>
-                <div className="hero-caption"><strong>{104 - computed.completed.length}</strong><span>matches remain</span></div>
+                <div className="hero-caption"><strong>{remainingMatches}</strong><span>matches remain</span></div>
               </div>
             </section>
 
@@ -642,10 +677,12 @@ function App() {
             <section className="content-section split-section">
               <div>
                 <SectionHeading eyebrow="Up next" title="The next kickoffs" copy="Times are automatically shown in your device timezone." />
-                <div className="match-stack">{computed.next.slice(0, 4).map((game) => <MatchCard key={game.id} game={game} data={data} />)}</div>
+                {computed.next.length ? (
+                  <div className="match-stack">{computed.next.slice(0, 4).map((game) => <MatchCard key={game.id} game={game} data={data} />)}</div>
+                ) : <p className="empty-state">No remaining scheduled matches.</p>}
               </div>
               <div>
-                <SectionHeading eyebrow="Qualification watch" title="The third-place line" copy="Eight of the twelve third-placed teams advance." />
+                <SectionHeading eyebrow={thirdPlaceEyebrow} title={thirdPlaceTitle} copy={thirdPlaceCopy} />
                 <article className="third-place-card">
                   {computed.thirdPlace.map((row, index) => {
                     const team = data.teams.find((item) => item.id === row.team_id)
@@ -689,9 +726,9 @@ function App() {
 
         {view === 'groups' && (
           <section className="page-section">
-            <SectionHeading eyebrow="Qualification" title="Twelve groups, one pressure line" copy="The first two in every group advance, joined by the eight best third-placed teams." />
+            <SectionHeading eyebrow="Group stage" title="Twelve groups, one pressure line" copy="The first two in every group advanced, joined by the eight best third-placed teams." />
             <div className="groups-grid">{[...data.groups].sort((a, b) => a.name.localeCompare(b.name)).map((group) => <GroupTable key={group.name} group={group} data={data} />)}</div>
-            <SectionHeading eyebrow="Across all groups" title="Best third-placed teams" copy="Ranked by points, goal difference and goals scored. The line after eighth place separates the current qualifiers." />
+            <SectionHeading eyebrow="Across all groups" title="Best third-placed teams" copy="Ranked by points, goal difference and goals scored. The line after eighth place shows who reached the Round of 32." />
             <article className="third-place-card third-place-card--wide">
               {computed.thirdPlace.map((row, index) => {
                 const team = data.teams.find((item) => item.id === row.team_id)
@@ -710,16 +747,19 @@ function App() {
           <section className="page-section">
             <SectionHeading eyebrow="Road to July 19" title="The knockout path" copy="Confirmed teams populate automatically as the tournament advances." />
             <div className="bracket">
-              {['r32', 'r16', 'qf', 'sf', 'final'].map((round) => {
+              {['r32', 'r16', 'qf', 'sf', 'third', 'final'].map((round) => {
                 const games = data.games.filter((game) => game.type === round || (round === 'r32' && game.type === 'round32') || (round === 'r16' && game.type === 'round16'))
                 return (
                   <div className="bracket-round" key={round}>
                     <h3>{roundNames[round]}</h3>
                     {games.map((game) => (
                       <article key={game.id}>
-                        <span>{teamName(game.home_team_id, data.teams)}</span><b>{isFinished(game) ? game.home_score : ''}</b>
-                        <span>{teamName(game.away_team_id, data.teams)}</span><b>{isFinished(game) ? game.away_score : ''}</b>
-                        <small>{formatKickoff(game, data.stadiums, true)}</small>
+                        <span>{displayTeamName(game, 'home', data.teams)}</span><b>{isFinished(game) ? game.home_score : ''}</b>
+                        <span>{displayTeamName(game, 'away', data.teams)}</span><b>{isFinished(game) ? game.away_score : ''}</b>
+                        <small>
+                          {formatKickoff(game, data.stadiums, true)}
+                          {hasPenaltyScore(game) ? ` · pens ${number(game.home_penalty_score)}-${number(game.away_penalty_score)}` : ''}
+                        </small>
                       </article>
                     ))}
                     {!games.length && <p>Matchups will appear when qualification is resolved.</p>}
@@ -780,7 +820,7 @@ function App() {
               <ChartFrame eyebrow="Score fingerprints" title="Every final score" copy="Darker cells represent scorelines that have happened more often.">
                 <ScorelineMatrix games={computed.completed} />
               </ChartFrame>
-              <ChartFrame eyebrow="Qualification pressure" title="The third-place bubble race" copy="Height is points. Bubble size reflects goal difference. The vertical line marks the current top-eight cutoff.">
+              <ChartFrame eyebrow="Group-stage cutoff" title="The third-place bubble race" copy="Height is points. Bubble size reflects goal difference. The vertical line marks the top-eight cutoff that set the Round of 32.">
                 <QualificationBubbles rows={computed.thirdPlace} teams={data.teams} />
               </ChartFrame>
               <ChartFrame eyebrow="Team balance" title="Scoring versus conceding" copy="Each group uses mirrored bars: goals conceded extend left in gold, while goals scored extend right in green. Every panel shares one scale, making comparisons direct." className="viz-card--wide">

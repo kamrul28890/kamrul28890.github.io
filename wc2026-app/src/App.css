@@ -108,10 +108,13 @@ main { width: min(1500px, 100%); margin: 0 auto; padding: 0 clamp(18px, 4vw, 64p
 .side--away { justify-items: end; text-align: right; }
 .side img { width: 37px; height: 25px; object-fit: cover; border-radius: 2px; box-shadow: 0 0 0 1px rgba(255,255,255,.12); }
 .side span { width: 100%; overflow: hidden; text-overflow: ellipsis; font-weight: 700; font-size: .86rem; }
-.score { display: flex; align-items: center; gap: 8px; }
+.score { display: grid; justify-items: center; gap: 3px; min-width: 58px; }
+.score__main { display: flex; align-items: center; gap: 8px; }
 .score strong { font: 700 2.2rem 'Barlow Condensed'; }
 .score i, .score span { color: var(--dim); font-style: normal; font-size: .7rem; text-transform: uppercase; }
+.score small { color: var(--gold); font: 600 .58rem 'DM Mono'; text-transform: uppercase; white-space: nowrap; }
 .match-card__footer { padding-top: 13px; border-top: 1px solid var(--line); text-transform: none; }
+.empty-state { margin: 0; padding: 18px; color: var(--dim); background: var(--panel); border: 1px solid var(--line); font-size: .82rem; }
 
 .split-section { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; }
 .split-section .section-heading { grid-template-columns: 1fr; gap: 5px; }
@@ -158,7 +161,7 @@ td img { width: 23px; height: 15px; object-fit: cover; }
 .rank--1, .rank--2 { color: #07100f; background: var(--green); }
 .rank--3 { border: 1px solid var(--gold); color: var(--gold); }
 
-.bracket { display: grid; grid-template-columns: 2fr 1.5fr 1.2fr 1fr .9fr; gap: 15px; overflow-x: auto; padding-bottom: 18px; }
+.bracket { display: grid; grid-template-columns: 2fr 1.5fr 1.2fr 1fr .85fr .9fr; gap: 15px; overflow-x: auto; padding-bottom: 18px; }
 .bracket-round { min-width: 210px; display: flex; flex-direction: column; justify-content: space-around; gap: 10px; }
 .bracket-round h3 { color: var(--green); font: 600 .72rem 'DM Mono'; text-transform: uppercase; letter-spacing: .08em; }
 .bracket-round article { display: grid; grid-template-columns: 1fr auto; gap: 5px 9px; padding: 11px; background: var(--panel); border: 1px solid var(--line); position: relative; }
