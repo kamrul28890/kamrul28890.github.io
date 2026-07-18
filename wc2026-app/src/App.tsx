@@ -166,9 +166,8 @@ function formatKickoff(game: Game, stadiums: Stadium[], includeDate = false) {
 }
 
 function matchState(game: Game, stadiums: Stadium[]) {
-  if (isFinished(game)) return 'FT'
-  if (isLive(game)) return `${game.time_elapsed}′`
-  return formatKickoff(game, stadiums)
+  if (isLive(game)) return `${game.time_elapsed}′ · ${formatKickoff(game, stadiums, true)}`
+  return formatKickoff(game, stadiums, true)
 }
 
 function stageLabel(game: Game) {
