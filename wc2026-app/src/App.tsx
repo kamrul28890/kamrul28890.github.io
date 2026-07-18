@@ -14,6 +14,8 @@ type Game = {
   away_team_label?: string
   home_score: string
   away_score: string
+  home_scorers?: string
+  away_scorers?: string
   home_penalty_score?: string
   away_penalty_score?: string
   group: string
@@ -54,6 +56,16 @@ type TournamentData = {
   groups: Group[]
   teams: Team[]
   stadiums: Stadium[]
+}
+
+type GoalEvent = {
+  id: string
+  game: Game
+  teamId: string
+  teamName: string
+  scorer: string
+  minute: number
+  baseMinute: number
 }
 
 const LIVE_API = 'https://worldcup26.ir/get'
@@ -193,6 +205,65 @@ function hasPenaltyScore(game: Game) {
   return game.home_penalty_score !== undefined
     && game.away_penalty_score !== undefined
     && (number(game.home_penalty_score) > 0 || number(game.away_penalty_score) > 0)
+}
+
+function scorerEntries(value?: string) {
+  if (!value || value === 'null') return []
+  const normalized = value
+    .replace(/[{}]/g, '')
+    .replace(/[“”]/g, '"')
+    .replace(/[‘’]/g, "'")
+
+  const quoted = normalized.match(/"[^"]+"/g)
+  if (quoted) return quoted.map((entry) => entry.replace(/^"|"$/g, '').trim()).filter(Boolean)
+  return normalized.split(',').map((entry) => entry.replace(/^"|"$/g, '').trim()).filter(Boolean)
+}
+
+function goalMinute(entry: string) {
+  const text = entry.replace(/[‘’]/g, "'")
+  const stoppageAfterQuote = text.match(/(\d{1,3})'\+(\d{1,2})'/)
+  if (stoppageAfterQuote) {
+    const baseMinute = number(stoppageAfterQuote[1])
+    return { minute: baseMinute + number(stoppageAfterQuote[2]), baseMinute }
+  }
+
+  const stoppage = text.match(/(\d{1,3})\+(\d{1,2})'/)
+  if (stoppage) {
+    const baseMinute = number(stoppage[1])
+    return { minute: baseMinute + number(stoppage[2]), baseMinute }
+  }
+
+  const regular = text.match(/(\d{1,3})'/)
+  if (regular) {
+    const baseMinute = number(regular[1])
+    return { minute: baseMinute, baseMinute }
+  }
+
+  return null
+}
+
+function goalEventsForGame(game: Game, teams: Team[]): GoalEvent[] {
+  const sides: Array<{ side: 'home' | 'away'; teamId: string; raw?: string }> = [
+    { side: 'home', teamId: game.home_team_id, raw: game.home_scorers },
+    { side: 'away', teamId: game.away_team_id, raw: game.away_scorers },
+  ]
+
+  return sides.flatMap(({ side, teamId, raw }) => {
+    const teamNameValue = displayTeamName(game, side, teams)
+    return scorerEntries(raw).flatMap((entry, index) => {
+      const parsed = goalMinute(entry)
+      if (!parsed) return []
+      return [{
+        id: `${game.id}-${side}-${index}`,
+        game,
+        teamId,
+        teamName: teamNameValue,
+        scorer: entry.replace(/\s*\d{1,3}(?:'\+\d{1,2}'|\+\d{1,2}'|').*$/, '').trim(),
+        minute: parsed.minute,
+        baseMinute: parsed.baseMinute,
+      }]
+    })
+  })
 }
 
 async function fetchJson<T>(url: string, timeout = 7000): Promise<T> {
@@ -439,6 +510,96 @@ function StadiumLoad({ games, stadiums }: { games: Game[]; stadiums: Stadium[] }
       ))}
       <footer><span><i className="scheduled-key" /> Scheduled</span><span><i className="played-key" /> Played</span></footer>
     </div>
+  )
+}
+
+function GoalAtlasLite({ games, data }: { games: Game[]; data: TournamentData }) {
+  const totalGoals = games.reduce((sum, game) => sum + number(game.home_score) + number(game.away_score), 0)
+  const goalEvents = games.flatMap((game) => goalEventsForGame(game, data.teams))
+
+  const teamRows = [...games.reduce((map, game) => {
+    ([
+      { teamId: game.home_team_id, goals: number(game.home_score), name: displayTeamName(game, 'home', data.teams) },
+      { teamId: game.away_team_id, goals: number(game.away_score), name: displayTeamName(game, 'away', data.teams) },
+    ]).forEach(({ teamId, goals, name }) => {
+      if (!teamId || teamId === '0') return
+      const team = data.teams.find((item) => item.id === teamId)
+      const row = map.get(teamId) || { id: teamId, name, code: team?.fifa_code || name.slice(0, 3).toUpperCase(), flag: team?.flag, goals: 0 }
+      row.goals += goals
+      map.set(teamId, row)
+    })
+    return map
+  }, new Map<string, { id: string; name: string; code: string; flag?: string; goals: number }>()).values()]
+    .sort((a, b) => b.goals - a.goals || a.name.localeCompare(b.name))
+    .slice(0, 8)
+
+  const stageRows = [...games.reduce((map, game) => {
+    const label = game.type === 'group' ? 'Group stage' : roundNames[game.type] || game.type
+    map.set(label, (map.get(label) || 0) + number(game.home_score) + number(game.away_score))
+    return map
+  }, new Map<string, number>()).entries()]
+    .map(([label, goals]) => ({ label, goals }))
+    .sort((a, b) => b.goals - a.goals)
+
+  const stadiumRows = [...games.reduce((map, game) => {
+    const stadium = data.stadiums.find((item) => item.id === game.stadium_id)
+    const label = stadium?.city_en?.split(' (')[0] || stadium?.fifa_name || 'Unknown venue'
+    map.set(label, (map.get(label) || 0) + number(game.home_score) + number(game.away_score))
+    return map
+  }, new Map<string, number>()).entries()]
+    .map(([label, goals]) => ({ label, goals }))
+    .sort((a, b) => b.goals - a.goals || a.label.localeCompare(b.label))
+    .slice(0, 8)
+
+  const minuteBands = [
+    { label: '1-15', count: goalEvents.filter((goal) => goal.baseMinute <= 15).length },
+    { label: '16-30', count: goalEvents.filter((goal) => goal.baseMinute > 15 && goal.baseMinute <= 30).length },
+    { label: '31-45+', count: goalEvents.filter((goal) => goal.baseMinute > 30 && goal.baseMinute <= 45).length },
+    { label: '46-60', count: goalEvents.filter((goal) => goal.baseMinute > 45 && goal.baseMinute <= 60).length },
+    { label: '61-75', count: goalEvents.filter((goal) => goal.baseMinute > 60 && goal.baseMinute <= 75).length },
+    { label: '76-90+', count: goalEvents.filter((goal) => goal.baseMinute > 75).length },
+  ]
+
+  const BarRows = ({ rows, max }: { rows: Array<{ label: string; goals?: number; count?: number; flag?: string; code?: string }>; max: number }) => (
+    <div className="atlas-bars">
+      {rows.map((row) => {
+        const value = row.goals ?? row.count ?? 0
+        return (
+          <div key={row.label}>
+            <span>{row.flag && <img src={row.flag} alt="" />}{row.code && <b>{row.code}</b>}<strong>{row.label}</strong></span>
+            <i><b style={{ width: `${(value / Math.max(max, 1)) * 100}%` }} /></i>
+            <em>{value}</em>
+          </div>
+        )
+      })}
+    </div>
+  )
+
+  const teamMax = Math.max(...teamRows.map((row) => row.goals), 1)
+  const stageMax = Math.max(...stageRows.map((row) => row.goals), 1)
+  const stadiumMax = Math.max(...stadiumRows.map((row) => row.goals), 1)
+  const minuteMax = Math.max(...minuteBands.map((row) => row.count), 1)
+
+  return (
+    <section className="goal-atlas-lite">
+      <header>
+        <span>Goal Atlas Lite</span>
+        <h3>Goals we can verify from the current match feed</h3>
+        <p>Score fields power team, stage and venue totals. Scorer-minute strings cover {goalEvents.length} of {totalGoals} goals for the timing view.</p>
+      </header>
+      <div className="goal-atlas-metrics">
+        <article><span>Total goals</span><strong>{totalGoals}</strong><small>from completed matches</small></article>
+        <article><span>Minute tags</span><strong>{goalEvents.length}</strong><small>parseable scorer entries</small></article>
+        <article><span>Top team</span><strong>{teamRows[0]?.code || 'TBD'}</strong><small>{teamRows[0]?.goals || 0} goals</small></article>
+      </div>
+      <div className="goal-atlas-panels">
+        <article><h4>Top scoring teams</h4><BarRows rows={teamRows.map((row) => ({ label: row.name, goals: row.goals, flag: row.flag, code: row.code }))} max={teamMax} /></article>
+        <article><h4>Goals by tournament stage</h4><BarRows rows={stageRows.map((row) => ({ label: row.label, goals: row.goals }))} max={stageMax} /></article>
+        <article><h4>Highest-scoring host cities</h4><BarRows rows={stadiumRows.map((row) => ({ label: row.label, goals: row.goals }))} max={stadiumMax} /></article>
+        <article><h4>Goal timing bands</h4><BarRows rows={minuteBands.map((row) => ({ label: row.label, count: row.count }))} max={minuteMax} /></article>
+      </div>
+      <footer>Shot maps, xG, momentum and passing networks still require event coordinates from a verified event-data provider.</footer>
+    </section>
   )
 }
 
@@ -839,7 +1000,7 @@ function App() {
                 </div>
               </ChartFrame>
             </div>
-            <aside className="future-data-note"><span>Next data layer</span><strong>Goal Atlas · shot maps · xG · momentum · passing networks</strong><p>These require verified event coordinates and advanced match data. The interface is ready for them once the provider upgrade is connected.</p></aside>
+            <GoalAtlasLite games={computed.completed} data={data} />
           </section>
         )}
 
