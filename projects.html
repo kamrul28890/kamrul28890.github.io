@@ -39,6 +39,7 @@
     <li><a href="research.html">Research</a></li>
     <li><a href="projects.html" class="active">Projects</a></li>
     <li><a href="blog.html">Writing</a></li>
+    <li><a href="wc2026/">World Cup</a></li>
     <li><a href="life.html">Life</a></li>
     <li><a href="index.html#contact">Contact</a></li>
   </ul>
@@ -61,7 +62,7 @@
     <div class="section-label"><span class="label-line"></span><span>Projects</span></div>
     <h1>Things I've Built</h1>
     <p>A mix of AI experiments, applied tools, and systems that started as ideas and
-       became real things. From multi-agent debate platforms to geotechnical automation.</p>
+       became real things. From explainable safety AI and disease forecasting to BIM tooling, games, and geotechnical automation.</p>
   </div>
 </section>
 
@@ -93,8 +94,222 @@
       </div>
     </a>
 
+    <div class="section-label" style="margin-top:1rem"><span class="label-line"></span><span>Latest · 2026</span></div>
+    <div class="projects-grid reveal" style="margin-bottom:3rem">
+      <div class="project-full-card">
+        <div class="pfc-header">
+          <span class="pfc-icon">FB</span>
+          <h3 class="pfc-title">ConstructionSafety-FaithBench</h3>
+        </div>
+        <p class="pfc-desc">A benchmark that audits whether construction-safety vision-language models use the visual evidence their verdicts depend on. Targeted versus size-matched random occlusion separates correctness, grounding, and faithfulness. Oral presentation at SNAS 2026.</p>
+        <div class="pfc-footer">
+          <div class="pfc-tags">
+            <span class="pfc-tag">Python</span>
+            <span class="pfc-tag">VLMs</span>
+            <span class="pfc-tag">Explainable AI</span>
+          </div>
+          <a href="https://github.com/kamrul28890/snas-2026-construction-safety-faithbench" target="_blank" rel="noopener" class="pfc-link">GitHub ↗</a>
+        </div>
+      </div>
+      <div class="project-full-card">
+        <div class="pfc-header">
+          <span class="pfc-icon">XA</span>
+          <h3 class="pfc-title">Explainable AI for Construction Safety VLMs</h3>
+        </div>
+        <p class="pfc-desc">Adapts a six-metric XAI evaluation framework, originally built for network-intrusion models, to construction-safety VLMs. A Florence-2 pilot on ConstructionSite 10k tests whether explanations stay accurate, focused, robust, and necessary.</p>
+        <div class="pfc-footer">
+          <div class="pfc-tags">
+            <span class="pfc-tag">Florence-2</span>
+            <span class="pfc-tag">XAI Metrics</span>
+            <span class="pfc-tag">Research</span>
+          </div>
+          <a href="https://github.com/kamrul28890/Explainable-AI-for-CM" target="_blank" rel="noopener" class="pfc-link">GitHub ↗</a>
+        </div>
+      </div>
+      <div class="project-full-card">
+        <div class="pfc-header">
+          <span class="pfc-icon">IM</span>
+          <h3 class="pfc-title">IMDC 2026 Dengue Forecasting</h3>
+        </div>
+        <p class="pfc-desc">Team-lead submission to the 3rd Infodengue–Mosqlimate Dengue Challenge: weekly probabilistic dengue and chikungunya forecasts for Brazilian states using LightGBM with conformal quantiles, a GRU deep ensemble, a mechanistic model, and a Vincentized ensemble.</p>
+        <div class="pfc-footer">
+          <div class="pfc-tags">
+            <span class="pfc-tag">Forecasting</span>
+            <span class="pfc-tag">LightGBM</span>
+            <span class="pfc-tag">Ensembles</span>
+          </div>
+          <a href="https://github.com/kamrul28890/3rd_imdc_purdue_neuralearth" target="_blank" rel="noopener" class="pfc-link">GitHub ↗</a>
+        </div>
+      </div>
+      <div class="project-full-card">
+        <div class="pfc-header">
+          <span class="pfc-icon">BL</span>
+          <h3 class="pfc-title">Bornil: Bangla Sign Language to Text</h3>
+        </div>
+        <p class="pfc-desc">A gloss-free, keypoint-based pipeline that translates Bangla Sign Language video into Bangla text, with a frozen benchmark and baseline suite. The best model (temporal convolutions with joint CTC/attention) beats the vanilla baseline on every split.</p>
+        <div class="pfc-footer">
+          <div class="pfc-tags">
+            <span class="pfc-tag">MediaPipe</span>
+            <span class="pfc-tag">Seq2Seq</span>
+            <span class="pfc-tag">Benchmark</span>
+          </div>
+          <a href="https://github.com/kamrul28890/bornil-sign-language" target="_blank" rel="noopener" class="pfc-link">GitHub ↗</a>
+        </div>
+      </div>
+      <div class="project-full-card">
+        <div class="pfc-header">
+          <span class="pfc-icon">IF</span>
+          <h3 class="pfc-title">IFC Toolkit</h3>
+        </div>
+        <p class="pfc-desc">Two independent tools, Python (IfcOpenShell) and Windows .NET (xBIM), that compute world-space placement and coordinates in IFC building models. Continuous integration checks the two against each other.</p>
+        <div class="pfc-footer">
+          <div class="pfc-tags">
+            <span class="pfc-tag">IFC / BIM</span>
+            <span class="pfc-tag">Python</span>
+            <span class="pfc-tag">C# .NET</span>
+          </div>
+          <span class="pfc-link pfc-link--private">Private repo</span>
+        </div>
+      </div>
+      <div class="project-full-card">
+        <div class="pfc-header">
+          <span class="pfc-icon">GB</span>
+          <h3 class="pfc-title">GeoBIM Georeferencing Fault Benchmark</h3>
+        </div>
+        <p class="pfc-desc">A controlled benchmark of 1,484 IFC georeferencing fault cases for Purdue GIS Day 2026, testing which coordinate errors actually change downstream decisions. Validated with 43 tests and byte-identical reruns.</p>
+        <div class="pfc-footer">
+          <div class="pfc-tags">
+            <span class="pfc-tag">GIS</span>
+            <span class="pfc-tag">BIM</span>
+            <span class="pfc-tag">Benchmark</span>
+          </div>
+          <span class="pfc-link pfc-link--private">Private repo</span>
+        </div>
+      </div>
+      <div class="project-full-card">
+        <div class="pfc-header">
+          <span class="pfc-icon">CD</span>
+          <h3 class="pfc-title">Construction Site Photo Archive AI</h3>
+        </div>
+        <p class="pfc-desc">Computer vision and language-model research on a real archive of daily site photos and QC reports from fire-station construction projects in Dhaka, covering ingestion, profiling, and an annotation pilot.</p>
+        <div class="pfc-footer">
+          <div class="pfc-tags">
+            <span class="pfc-tag">Computer Vision</span>
+            <span class="pfc-tag">LLMs</span>
+            <span class="pfc-tag">Construction Data</span>
+          </div>
+          <span class="pfc-link pfc-link--private">Private repo</span>
+        </div>
+      </div>
+      <div class="project-full-card">
+        <div class="pfc-header">
+          <span class="pfc-icon">IN</span>
+          <h3 class="pfc-title">INDOT Solar Suitability Map</h3>
+        </div>
+        <p class="pfc-desc">Public website for an INDOT solar suitability research project: a React, Vite, and Leaflet map for screening candidate sites and right-of-way parcels, with an insights page and a browser-based map builder for new shapefiles.</p>
+        <div class="pfc-footer">
+          <div class="pfc-tags">
+            <span class="pfc-tag">React</span>
+            <span class="pfc-tag">Leaflet</span>
+            <span class="pfc-tag">GIS</span>
+          </div>
+          <a href="https://github.com/kamrul28890/InDOT-Solar-Suitability-Map-2" target="_blank" rel="noopener" class="pfc-link">GitHub ↗</a>
+        </div>
+      </div>
+      <div class="project-full-card">
+        <div class="pfc-header">
+          <span class="pfc-icon">AA</span>
+          <h3 class="pfc-title">The Agreeable Advisor</h3>
+        </div>
+        <p class="pfc-desc">A study of whether LLM advisors defer to a user's stated belief in expected-value decisions. Includes a stimulus bank, collection pipeline, and analysis.</p>
+        <div class="pfc-footer">
+          <div class="pfc-tags">
+            <span class="pfc-tag">LLMs</span>
+            <span class="pfc-tag">Sycophancy</span>
+            <span class="pfc-tag">Decision Science</span>
+          </div>
+          <span class="pfc-link pfc-link--private">Private repo</span>
+        </div>
+      </div>
+      <div class="project-full-card">
+        <div class="pfc-header">
+          <span class="pfc-icon">BS</span>
+          <h3 class="pfc-title">BatteryScope</h3>
+        </div>
+        <p class="pfc-desc">Native macOS battery dashboard in SwiftUI and IOKit. It compares raw, nominal, and macOS-reported health, keeps local history and lifetime statistics, and sends configurable alerts with no telemetry.</p>
+        <div class="pfc-footer">
+          <div class="pfc-tags">
+            <span class="pfc-tag">Swift</span>
+            <span class="pfc-tag">SwiftUI</span>
+            <span class="pfc-tag">macOS</span>
+          </div>
+          <a href="https://github.com/kamrul28890/BatteryScope" target="_blank" rel="noopener" class="pfc-link">GitHub ↗</a>
+        </div>
+      </div>
+      <div class="project-full-card">
+        <div class="pfc-header">
+          <span class="pfc-icon">AH</span>
+          <h3 class="pfc-title">After Hours</h3>
+        </div>
+        <p class="pfc-desc">Six online multiplayer party games plus Common Ground, a twelve-chapter game-theory course with live in-room experiments.</p>
+        <div class="pfc-footer">
+          <div class="pfc-tags">
+            <span class="pfc-tag">TypeScript</span>
+            <span class="pfc-tag">Multiplayer</span>
+            <span class="pfc-tag">Game Theory</span>
+          </div>
+          <span class="pfc-link pfc-link--private">Private repo</span>
+        </div>
+      </div>
+      <div class="project-full-card">
+        <div class="pfc-header">
+          <span class="pfc-icon">EC</span>
+          <h3 class="pfc-title">Ember Coast</h3>
+        </div>
+        <p class="pfc-desc">An original island-economy strategy game for one human and three planning bots, with explainable bot decisions, bargaining, and an illustrated hex board.</p>
+        <div class="pfc-footer">
+          <div class="pfc-tags">
+            <span class="pfc-tag">JavaScript</span>
+            <span class="pfc-tag">Game AI</span>
+            <span class="pfc-tag">Strategy</span>
+          </div>
+          <a href="https://github.com/kamrul28890/ember-coast" target="_blank" rel="noopener" class="pfc-link">GitHub ↗</a>
+        </div>
+      </div>
+      <div class="project-full-card">
+        <div class="pfc-header">
+          <span class="pfc-icon">MS</span>
+          <h3 class="pfc-title">MotionScore</h3>
+        </div>
+        <p class="pfc-desc">Turns a song into a live physics-driven visualization: Demucs separates the stems, rhythm and pitch analysis drive the motion. Extended from an open-source line-rider visualizer.</p>
+        <div class="pfc-footer">
+          <div class="pfc-tags">
+            <span class="pfc-tag">Demucs</span>
+            <span class="pfc-tag">Audio</span>
+            <span class="pfc-tag">Visualization</span>
+          </div>
+          <a href="https://github.com/kamrul28890/motionscore" target="_blank" rel="noopener" class="pfc-link">GitHub ↗</a>
+        </div>
+      </div>
+      <div class="project-full-card">
+        <div class="pfc-header">
+          <span class="pfc-icon">TB</span>
+          <h3 class="pfc-title">Telegram Cloud Backup Tool</h3>
+        </div>
+        <p class="pfc-desc">A PySide6 desktop app that backs up selected files to your own Telegram account, with watched folders, SHA-256 incremental sync, restore and search, and keychain credential storage.</p>
+        <div class="pfc-footer">
+          <div class="pfc-tags">
+            <span class="pfc-tag">Python</span>
+            <span class="pfc-tag">PySide6</span>
+            <span class="pfc-tag">Telethon</span>
+          </div>
+          <a href="https://github.com/kamrul28890/telegram-cloud-backup-tool" target="_blank" rel="noopener" class="pfc-link">GitHub ↗</a>
+        </div>
+      </div>
+    </div>
+
     <!-- ALL PROJECTS GRID -->
-    <div class="section-label" style="margin-top:1rem"><span class="label-line"></span><span>All Projects</span></div>
+    <div class="section-label" style="margin-top:1rem"><span class="label-line"></span><span>More Projects</span></div>
     <div class="projects-grid reveal">
 
       <div class="project-full-card">

@@ -1,9 +1,9 @@
 name: Refresh World Cup fallback data
 
+# The tournament ended on 2026-07-19 and the archive is final, so the
+# scheduled refresh is retired. Run manually only if a correction is needed.
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '17 */4 * * *'
 
 permissions:
   contents: write

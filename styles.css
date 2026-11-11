@@ -861,7 +861,33 @@ h1, h2, h3, h4, h5 {
 /* ═══════════════════════════════════════════════════
    RESPONSIVE
 ═══════════════════════════════════════════════════ */
+.pfc-link--private { color: var(--ink3); border-color: var(--border); cursor: default; }
+
+/* ═══════════════════════════════════════════════════
+   NEWS
+═══════════════════════════════════════════════════ */
+.news-section { background: var(--bg); }
+.news-grid { display: grid; grid-template-columns: 1.35fr 1fr; gap: 1.2rem; }
+.news-stack { display: grid; gap: 1.2rem; }
+.news-card {
+  position: relative; display: flex; flex-direction: column; gap: 0.6rem;
+  padding: 1.6rem 1.7rem; background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); box-shadow: var(--shadow);
+}
+.news-card--headline { border-top: 3px solid var(--brand); padding: 2.1rem 2.1rem 1.9rem; }
+.news-card--headline h3 { font-family: 'Source Serif 4', serif; font-size: clamp(1.45rem, 2.6vw, 1.95rem); line-height: 1.2; }
+.news-card h3 { font-family: 'Source Serif 4', serif; font-size: 1.12rem; line-height: 1.3; color: var(--ink); }
+.news-card p { font-size: 0.9rem; color: var(--ink2); }
+.news-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; font-family: 'DM Mono', monospace; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink3); }
+.news-tag { padding: 0.18rem 0.55rem; border-radius: 999px; background: var(--brand-glow); color: var(--brand); }
+.news-tag--accent { background: var(--accent-glow); color: var(--accent); }
+.news-stat { display: flex; align-items: baseline; gap: 0.6rem; margin-top: 0.4rem; }
+.news-stat strong { font-family: 'Source Serif 4', serif; font-size: 2.6rem; line-height: 1; color: var(--brand); }
+.news-stat span { font-size: 0.85rem; color: var(--ink3); }
+.news-card .text-link { margin-top: auto; padding-top: 0.4rem; }
+
 @media (max-width: 1024px) {
+  .news-grid { grid-template-columns: 1fr; }
   .hero-inner { grid-template-columns: 1fr; gap: 2rem; padding-top: 3rem; }
   .photo-frame { width: min(100%, 280px); margin: 0 auto; }
   .stat-cluster { width: 100%; margin: 0; }

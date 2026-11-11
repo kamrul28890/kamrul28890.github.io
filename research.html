@@ -39,6 +39,7 @@
     <li><a href="research.html" class="active">Research</a></li>
     <li><a href="projects.html">Projects</a></li>
     <li><a href="blog.html">Writing</a></li>
+    <li><a href="wc2026/">World Cup</a></li>
     <li><a href="life.html">Life</a></li>
     <li><a href="index.html#contact">Contact</a></li>
   </ul>
@@ -91,6 +92,12 @@
         My background in civil/geotechnical engineering, combined with graduate training in big data analytics
         and deep learning, gives me an unusual vantage point: I understand both the computational machinery
         of modern AI <em>and</em> the practical constraints of the construction industry it aims to serve.
+      </p>
+      <p>
+        Two newer threads run through my work in 2026. The first is <strong>trustworthy, explainable AI</strong>:
+        with Prof. Mustafa Abdallah, I built <em>ConstructionSafety-FaithBench</em> to test whether safety VLMs
+        actually rely on the visual evidence behind their verdicts (SNAS 2026, oral). The second is
+        <strong>egocentric perception</strong>: the Project Aria Gen 2 research proposal I developed and submitted was accepted, and the lab was awarded five pairs of Meta's research glasses for studying construction work from the worker's own point of view.
       </p>
     </div>
 
@@ -150,8 +157,12 @@
         </p>
       </div>
       <div>
-        <h3 style="font-family:'Source Serif 4', serif;font-size:1.1rem;margin-bottom:0.8rem">Current Lab Funding</h3>
+        <h3 style="font-family:'Source Serif 4', serif;font-size:1.1rem;margin-bottom:0.8rem">Current Lab Funding &amp; Resources</h3>
         <ul style="display:grid;gap:0.7rem;list-style:none">
+          <li style="font-size:0.86rem;color:var(--ink2);padding:0.6rem 0.9rem;background:var(--surface2);border:1px solid var(--brand);border-radius:8px">
+            <strong style="color:var(--ink);display:block;font-size:0.85rem">Meta Project Aria Gen 2 - Research Proposal Accepted</strong>
+            Fall 2026 · Proposal developed and submitted by Kamrul; five Aria Gen 2 research devices awarded to the lab
+          </li>
           <li style="font-size:0.86rem;color:var(--ink2);padding:0.6rem 0.9rem;background:var(--surface2);border:1px solid var(--border);border-radius:8px">
             <strong style="color:var(--ink);display:block;font-size:0.85rem">NVIDIA Academic Grant - Robotics &amp; Edge AI</strong>
             Spring 2026 – Spring 2027
@@ -181,7 +192,28 @@
 
     <div class="publications-list reveal">
 
-      <!-- Under Review -->
+      <!-- Accepted -->
+        <div style="margin-bottom:1rem">
+          <h3 style="font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:0.8rem">Accepted &middot; Forthcoming</h3>
+          <div class="pub-entry" style="border-left:2px solid var(--brand)">
+            <span class="pub-index">P7</span>
+            <div>
+              <h4>ConstructionSafety-FaithBench: Evaluating Visual-Evidence Sensitivity in Construction-Safety Vision-Language Systems</h4>
+              <p class="pub-authors">Md Kamruzzaman Kamrul, Eashraque Jahan Easha, Mustafa Abdallah</p>
+              <p class="pub-authors">Purdue University; University of Denver</p>
+              <p class="pub-venue">5th SNAS Interdisciplinary Research Conference (SNAS 2026), George Mason University &middot; Oral presentation &middot; Proceedings forthcoming</p>
+              <p class="pub-authors" style="margin-top:0.4rem">A construction-safety VLM can give the right verdict for the wrong visual reason. FaithBench separates correctness, grounding, and faithfulness, using targeted versus size-matched random occlusion: hiding the rule-relevant region flipped answers 39.2% of the time, against 9.2% for random regions of the same size.</p>
+              <div class="pub-links">
+                <span class="pub-link">Conference</span>
+                <span class="pub-link">SNAS Doctoral Research Grant</span>
+                <span class="pub-link">SNAS Travel Award</span>
+                <a href="https://github.com/kamrul28890/snas-2026-construction-safety-faithbench" target="_blank" rel="noopener" class="pub-link">Code &amp; Data</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Under Review -->
       <div style="margin-bottom:1rem">
         <h3 style="font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:0.8rem">Under Review</h3>
         <div class="pub-entry" style="border-left:2px solid var(--accent)">

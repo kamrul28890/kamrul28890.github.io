@@ -1,0 +1,318 @@
+% Resume source for assets/kamrul_resume.pdf
+% Build: tectonic assets/resume/kamrul_resume.tex --outdir assets && rm -f assets/kamrul_resume.log
+\documentclass[letterpaper,10pt]{article}
+
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{tabularx}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\addtolength{\oddsidemargin}{-0.55in}
+\addtolength{\evensidemargin}{-0.55in}
+\addtolength{\textwidth}{1.1in}
+\addtolength{\topmargin}{-.6in}
+\addtolength{\textheight}{1.2in}
+
+\urlstyle{same}
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+\titleformat{\section}{\vspace{-2pt}\raggedright\large\bfseries}{}{0em}{\MakeUppercase}[\color{black}\titlerule \vspace{-4pt}]
+
+% ---------- macros ----------
+\newcommand{\resumeItem}[1]{\item\small{#1 \vspace{-2pt}}}
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-7pt}
+}
+\newcommand{\resumeEdu}[4]{
+  \vspace{-2pt}\item
+    \begin{tabular*}{\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1}, #2 & #3 \\
+      \small #4 & \\
+    \end{tabular*}\vspace{-7pt}
+}
+\newcommand{\resumeDated}[2]{\item\small\parbox[t]{0.8\textwidth}{\raggedright #1}\hfill\mbox{#2}\vspace{-1pt}}
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=0.15in]}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{2pt}}
+\newcommand{\bulletList}{\begin{itemize}[leftmargin=0.15in, itemsep=1pt]}
+\newcommand{\bulletListEnd}{\end{itemize}}
+
+\begin{document}
+
+% ---------- heading ----------
+\begin{center}
+  {\Large \textbf{Md Kamruzzaman Kamrul}} \\ \vspace{2pt}
+  \small (+1) 404-203-1899 $\cdot$
+  \href{mailto:kamrul28890@gmail.com}{kamrul28890@gmail.com} $\cdot$
+  \href{https://kamrul28890.github.io}{kamrul28890.github.io} $\cdot$
+  \href{https://github.com/kamrul28890}{github.com/kamrul28890} \\
+  \href{https://www.linkedin.com/in/kamruzzamankamrul/}{linkedin.com/in/kamruzzamankamrul} $\cdot$
+  \href{https://scholar.google.com/citations?user=uc6urzoAAAAJ}{Google Scholar} $\cdot$
+  \href{https://orcid.org/0000-0002-7859-5564}{ORCID: 0000-0002-7859-5564}
+\end{center}
+
+% ---------- education ----------
+\section{Education}
+\resumeSubHeadingListStart
+  \resumeEdu{Purdue University}{West Lafayette, IN}{Jan 2026 -- Present}
+    {PhD in Technology, Bowen School of Construction Management; Advisor: Dr.\ Heung Jin Oh}
+  \resumeEdu{Robinson College of Business, Georgia State University}{Atlanta, GA}{Aug 2023 -- Jul 2024}
+    {MS in Computer Information Systems (Big Data Analytics); GPA: 3.93}
+  \resumeEdu{Institute of Business Administration (IBA), University of Dhaka}{Dhaka, Bangladesh}{Jan 2020 -- Apr 2022}
+    {MBA, Concentration in Finance}
+  \resumeEdu{Bangladesh University of Engineering and Technology (BUET)}{Dhaka, Bangladesh}{Mar 2009 -- Sep 2017}
+    {B.Sc.\ in Civil Engineering, Major: Geotechnical Engineering}
+\resumeSubHeadingListEnd
+
+% ---------- research interest ----------
+\section{Research Interest}
+\small{Vision-Language Models, Explainable and Trustworthy AI, Egocentric and Multimodal Perception, Construction Automation and Safety,
+Large Language Models, Machine Learning \& AI, Natural Language Processing, Time-Series Forecasting, Mathematical Modeling, Optimization,
+Numerical Simulations, Computational Geomechanics, Seismic Risk Assessment, Robotics in Civil Engineering, Data Science for
+Infrastructure and Urban Systems, Decision-Making Systems, Game Theory, and Intelligent Human-Robot Interaction.}
+
+% ---------- honors ----------
+\section{Honors \& Awards}
+\bulletList
+  \resumeDated{\textbf{Meta Project Aria Gen 2 Research Program} -- research proposal developed and submitted by me was accepted; five Aria Gen 2 research devices awarded to the Wii Lab, Purdue}{2026}
+  \resumeDated{\textbf{SNAS Doctoral Research Grant} -- Society of North American Scholars}{2026}
+  \resumeDated{\textbf{SNAS Travel Award} -- 5th SNAS Interdisciplinary Research Conference, George Mason University}{2026}
+  \resumeDated{Amateur Radio Service Certificate -- Bangladesh Telecommunication Regulatory Commission (BTRC)}{2017}
+  \resumeDated{Certificate of Achievement -- EWU Interuniversity Math Olympiad (6\textsuperscript{th} Place)}{2013}
+  \resumeDated{Champion -- Divisional Mathematical Olympiad, Dhaka}{2008}
+  \resumeDated{First Runner Up -- Bangladesh Informatics Olympiad}{2008}
+  \resumeDated{First Runner Up -- 6\textsuperscript{th} Bangladesh National Mathematical Olympiad}{2008}
+\bulletListEnd
+
+% ---------- publications ----------
+\section{Publications}
+\textbf{\small Conference}
+\bulletList
+  \resumeItem{\textbf{Kamrul, M. K.}, Easha, E. J., \& Abdallah, M. (2026). ConstructionSafety-FaithBench: Evaluating visual-evidence
+    sensitivity in construction-safety vision-language systems. \textit{5\textsuperscript{th} SNAS Interdisciplinary Research Conference},
+    George Mason University. \textbf{Oral presentation}; proceedings forthcoming.}
+\bulletListEnd
+\textbf{\small Journal}
+\bulletList
+  \resumeItem{Chowdhury, S. S., \textbf{Kamrul, M. K.}, \& Easha, E. J. (2026). Context-aware homograph disambiguation in Bangla:
+    A multi-model machine learning approach. \textit{SUST Journal of Science and Technology}. doi:10.63512/sustjst.2024.1005}
+  \resumeItem{Hore, S., \textbf{Kamrul, M. K.}, Al Alim, M., \& Hore, R. (2025). Forecasting rainfall and temperature trends in Bangladesh
+    based on historical data analysis. \textit{Geosfera Indonesia}, 10(3).}
+  \resumeItem{Hore, R., Chakraborty, S., \textbf{Kamrul, K.}, Shuvon, A. M., \& Ansary, M. A. (2023). Earthquake response of wrap-faced
+    embankments on soft clay soil in Bangladesh. \textit{Earthquake Engineering and Engineering Vibration}, 22(3), 703--718.}
+  \resumeItem{Hore, R., Chakraborty, S., \textbf{Kamrul, K.}, Shuvon, A. M., \& Ansary, M. A. (2022). Numerical verification of seismic
+    response of reinforced soil embankments on soft clay foundation. \textit{Geotechnical Engineering}, 53(2).}
+  \resumeItem{Chakraborty, S., Hore, R., Shuvon, A. M., \textbf{Kamrul, K.}, \& Ansary, M. A. (2021). Physical and numerical analysis of
+    reinforced soil wall on clayey foundation under repetitive loading. \textit{Arabian Journal of Geosciences}, 14(12).}
+\bulletListEnd
+\textbf{\small Under Review}
+\bulletList
+  \resumeItem{\textbf{Kamrul, K.}, \& Oh, H. J. A systematic review of vision-language models in construction management: Applications,
+    challenges, and future directions. Supported by Purdue Office of Research Seed Funding.}
+\bulletListEnd
+
+% ---------- research experience ----------
+\section{Research Experience}
+\resumeSubHeadingListStart
+  \resumeSubheading{Purdue University, Wii Lab}{West Lafayette, IN}{Ph.D.\ Researcher}{Jan 2026 -- Present}
+  \resumeItemListStart
+    \resumeItem{Led \textit{ConstructionSafety-FaithBench}, a benchmark that audits whether construction-safety VLMs rely on the visual
+      evidence their verdicts depend on; targeted evidence occlusion flipped 39.2\% of answers versus 9.2\% for size-matched random
+      occlusion (SNAS 2026, oral presentation).}
+    \resumeItem{Adapted a six-metric XAI evaluation framework (with Prof.\ Mustafa Abdallah) from network-intrusion models to
+      construction-safety VLMs, and ran an end-to-end Florence-2 pilot on the ConstructionSite 10k dataset.}
+    \resumeItem{Developed and submitted an accepted Meta Project Aria Gen 2 research proposal, securing five Aria Gen 2 devices for the Wii Lab's egocentric, multimodal construction research.}
+    \resumeItem{Conducting a systematic literature review of vision-language and video models for construction management (under review).}
+    \resumeItem{Built a 1,484-case IFC georeferencing fault benchmark and cross-validated IFC placement tooling (Python and .NET) for
+      BIM--GIS integration research.}
+  \resumeItemListEnd
+
+  \resumeSubheading{Robinson College of Business, Georgia State University}{Atlanta, GA}{Post-Graduate Researcher}{Aug 2023 -- Jul 2024}
+  \resumeItemListStart
+    \resumeItem{Collected, processed, and cleaned 9,000+ corporate filings from 500+ firms using automated scripts for LLM-ready datasets.}
+    \resumeItem{Extracted company mentions from 60+ Robinhood Snacks newsletters to explore communication patterns via NLP techniques.}
+    \resumeItem{Curated and annotated 500+ data points from 150+ finance videos to assess market sentiment using vision-language analysis.}
+    \resumeItem{Managed financial datasets for ML workflows using Python, supporting downstream predictive analytics and sentiment modeling.}
+  \resumeItemListEnd
+
+  \resumeSubheading{Institute of Business Administration (IBA), University of Dhaka}{Dhaka, Bangladesh}{Post-Graduate Researcher}{Jun 2020 -- Dec 2022}
+  \resumeItemListStart
+    \resumeItem{Conducted financial analysis on Teletalk Bangladesh Ltd., deriving KPIs and investment insights using econometric modeling.}
+    \resumeItem{Performed macroeconomic analysis of the Bangladeshi telecom sector, using policy impact assessment and forecasting tools.}
+  \resumeItemListEnd
+
+  \resumeSubheading{Department of Civil Engineering, BUET}{Dhaka, Bangladesh}{Research Assistant, Breakwater \& Shake Table Project}{Aug 2019 -- Jul 2021}
+  \resumeItemListStart
+    \resumeItem{Led seismic experiments using shake tables to simulate embankment behavior under dynamic and cyclic loads.}
+    \resumeItem{Analyzed performance of geosynthetic-reinforced soil structures subjected to earthquake loads using both experimental and numerical methods.}
+    \resumeItem{Developed soil-structure interaction models for predicting failure patterns and resilience in soft clay foundations.}
+    \resumeItem{Applied finite element analysis to design safer construction methods in seismically vulnerable zones.}
+  \resumeItemListEnd
+
+  \resumeSubheading{Department of Civil Engineering, BUET}{Dhaka, Bangladesh}{Post-Graduate Researcher}{Aug 2019 -- Jul 2020}
+  \resumeItemListStart
+    \resumeItem{Created GIS-based spatial maps of climate indicators for infrastructure planning in urban and disaster-prone regions.}
+    \resumeItem{Assessed post-disaster housing demand in L\'eog\^ane, Haiti, identifying strategic reconstruction zones via geospatial modeling.}
+    \resumeItem{Modeled road network performance comparing residential and commercial infrastructure using GIS topology analysis.}
+    \resumeItem{Conducted tsunami vulnerability assessments for the 2004 Indian Ocean region using remote sensing and geospatial tools.}
+  \resumeItemListEnd
+\resumeSubHeadingListEnd
+
+% ---------- professional experience ----------
+\section{Professional Experience}
+\resumeSubHeadingListStart
+  \resumeSubheading{Purdue University}{West Lafayette, IN}{Graduate Teaching Assistant, CM 30101 (Bowen School of Construction Management)}{Spring 2026, Fall 2026}
+  \resumeItemListStart
+    \resumeItem{Supported CM 30101 across two semesters: graded quizzes, assignments, and exams with consistent, timely feedback.}
+    \resumeItem{Built scripted roster-merge and per-student grading workflows, and assisted instructional staff with course administration.}
+  \resumeItemListEnd
+
+  \resumeSubheading{GEOCAL LLC}{Oklahoma City, OK}{Engineer}{Oct 2024 -- Dec 2025}
+  \resumeItemListStart
+    \resumeItem{Automated data reporting workflows and built comprehensive dashboards, increasing operational efficiency by 20\%.}
+    \resumeItem{Developed Excel-based macro systems for soil classification analysis, reducing manual data processing time by 25\%.}
+    \resumeItem{Coordinated material testing protocols and interpreted soil data to produce optimized geotechnical design recommendations.}
+  \resumeItemListEnd
+
+  \resumeSubheading{SIMPLISOLVE LLC}{Dallas, TX}{Data Science Intern (Part-time)}{May 2024 -- Present}
+  \resumeItemListStart
+    \resumeItem{Reproduced and analyzed 8 journal papers on time series forecasting with LLMs, optimizing project productivity by 20\%.}
+    \resumeItem{Designed and deployed forecasting models for penny stocks (SARIMA, Prophet), reducing error by 15\%, and streamlined model
+      deployment on Linux servers, cutting deployment time by 75\%.}
+    \resumeItem{Developed and implemented Deepfake detection using Computer Vision and GANs, achieving 95\% accuracy, and applied AI
+      tools to improve project management, increasing efficiency by 20\%.}
+    \resumeItem{Analyzed financial data and trends, created client-focused financial models, and improved business documentation processes,
+      enhancing communication and optimization by 25\% and 40\%, respectively.}
+  \resumeItemListEnd
+
+  \resumeSubheading{AAYATS LLC}{Atlanta, GA}{Data Analyst Intern (Part-time)}{Jan 2024 -- Apr 2024}
+  \resumeItemListStart
+    \resumeItem{Analyzed the functionality, integration and limitations of Datamuse, Essentia, Cyanite, and Musiio APIs, enabling a 10\%
+      faster process for determining integration.}
+    \resumeItem{Built and implemented an architecture that allowed for independent invocation, improving scalability and usability by 15\%.}
+    \resumeItem{Generated music file analytics and tagging features using API capabilities, including genre classification, mood analysis,
+      and BPM tagging, enhancing the relevance of metadata by 12\%.}
+  \resumeItemListEnd
+
+  \resumeSubheading{BRAC University}{Dhaka, Bangladesh}{Lecturer, Dept.\ of Mathematics and Natural Sciences}{Sep 2022 -- Jul 2023}
+  \resumeItemListStart
+    \resumeItem{Delivered lectures on Linear Algebra, Fourier Analysis, Operation Research, and Calculus to a total of 14 sections.}
+    \resumeItem{Led curriculum development for 500+ students in advanced courses, streamlining course materials and assessments.}
+    \resumeItem{Provided personalized consultation to 300+ students and collaborated with faculty to refine teaching methodologies and course delivery.}
+  \resumeItemListEnd
+
+  \resumeSubheading{Teletalk Bangladesh Limited}{Dhaka, Bangladesh}{Assistant Manager, 5G \& C\&H Projects}{Feb 2020 -- Jul 2023}
+  \resumeItemListStart
+    \resumeItem{Created and maintained dashboards using Tableau and PowerBI, providing insights and reducing manual work by 60\%.}
+    \resumeItem{Coordinated cross-departmental communication for Teletalk's 5G Readiness Project, managing 13 departments, 5 stakeholders,
+      78 personnel, and an Annual Procurement of \$49.5 million.}
+    \resumeItem{Executed comprehensive data analytics using SQL and statistical methods, resulting in a 12\% increase in operational functionality.}
+    \resumeItem{Administered the migration of over 5 TB of data to cloud infrastructure, achieving 33\% cost reduction and 35\% faster retrieval speed.}
+  \resumeItemListEnd
+
+  \resumeSubheading{Ministry of Primary and Mass Education}{Dhaka, Bangladesh}{Consultant, Math Skill Enhancement Project}{Jul 2018 -- Jun 2019}
+  \resumeItemListStart
+    \resumeItem{Trained 240 teachers in Teaching Methodology, organized 24 training camps with 40 teachers per camp over 10-day durations,
+      and provided specialized training to 25 PTI Instructors and 50 Master Trainers in regional camps.}
+    \resumeItem{Developed and implemented teaching methodologies for Mathematics for 1,500 Master Trainers and inspected the teaching
+      practices of over 40 schools across 10 districts in Bangladesh.}
+    \resumeItem{Introduced Olympiad courses on Muktopath, benefiting 200,000 primary school teachers.}
+  \resumeItemListEnd
+\resumeSubHeadingListEnd
+
+% ---------- other teaching ----------
+\section{Other Teaching Experience}
+\bulletList
+  \resumeDated{\textbf{Guest Faculty}, Shahjalal University of Science and Technology (SUST) -- Data Science and Machine Learning, School of Applied Sciences}{Sep 2021 -- Present}
+  \resumeDated{\textbf{Trainer and Mentor}, Bangladesh Mathematical Olympiad (BdMO) -- Number Theory and Combinatorics for national and IMO candidates}{Dec 2008 -- Dec 2016}
+  \resumeDated{\textbf{Trainer and Mentor}, Bangladesh Physics Olympiad (BPhO) -- Classical Mechanics lectures and problem-solving workshops}{Dec 2013 -- Dec 2014}
+  \resumeDated{\textbf{Instructor and Content Creator}, Onnorokom Pathshala -- free video lectures in Precalculus, Discrete Mathematics, and Mechanics}{Dec 2010 -- Dec 2017}
+\bulletListEnd
+
+% ---------- skills ----------
+\section{Computer Skills}
+\begin{tabularx}{\textwidth}{@{}p{0.46\textwidth}@{\hspace{0.04\textwidth}}X@{}}
+\small \textbf{Languages:} Python, R, C++, C\#, TypeScript/JavaScript, Swift, SQL, NoSQL, Bash &
+\small \textbf{ML/LLM/NLP:} PyTorch, TensorFlow, Keras, Scikit-learn, LightGBM, Hugging Face, LangChain, NLTK, SpaCy, OpenCV, MediaPipe, Statsmodels, H2O \\
+\small \textbf{Frameworks:} Hadoop, Apache Spark, FastAPI, Streamlit, React, Vite, PySide6 &
+\small \textbf{Vision-Language:} Florence-2, BLIP-2, YOLOv8, FaceXFormer \\
+\small \textbf{Database:} Oracle, MongoDB, SQL Server, SQLite &
+\small \textbf{BIM / GIS:} IfcOpenShell, xBIM, Leaflet, GeoJSON \\
+\small \textbf{Cloud \& DevOps:} AWS, GCP, Docker, Kubernetes, GKE, Git, GitHub Actions &
+\small \textbf{Visualization:} Tableau, Power BI, Matplotlib, Seaborn, custom SVG \\
+\end{tabularx}
+\small \textbf{Certifications:} AWS Cloud Foundation, Machine Learning Foundation, Tableau for Data Scientists, Mendix Low-Code/No-Code, Salesforce, CITI Program (Purdue)
+
+% ---------- projects ----------
+\section{Projects}
+\bulletList
+  \resumeItem{\textbf{IMDC 2026 Dengue Forecasting (Team Lead):} Weekly probabilistic dengue and chikungunya forecasts for Brazilian states
+    for the 3\textsuperscript{rd} Infodengue--Mosqlimate Dengue Challenge, using LightGBM with conformalized quantiles, a GRU deep ensemble,
+    a mechanistic model, and a Vincentized ensemble, evaluated with WIS/CRPS.}
+  \resumeItem{\textbf{Bornil (Bangla Sign Language to Text):} Gloss-free, keypoint-based translation pipeline and frozen benchmark; a
+    temporal-convolution model with joint CTC/attention beats the vanilla baseline on every official split.}
+  \resumeItem{\textbf{IFC Toolkit:} Two independent IFC placement engines (Python/IfcOpenShell and Windows .NET/xBIM) cross-validated in CI.}
+  \resumeItem{\textbf{INDOT Solar Suitability Map:} React, Vite, and Leaflet public website for screening candidate solar sites and
+    right-of-way parcels, with a browser-based map builder for new shapefile data.}
+  \resumeItem{\textbf{The Agreeable Advisor:} Study of whether LLM advisors defer to a user's stated belief in expected-value decisions.}
+  \resumeItem{\textbf{AI Debate Bot Simulator:} Fine-tuned Qwen 2.5 0.5B locally to simulate interactive debates between political figures,
+    integrating voice cloning and a custom automated moderator persona.}
+  \resumeItem{\textbf{BetterCallSaul (Legal AI):} Legal chatbot navigating 104,000 Illinois caselaws using the OpenAI API, LangChain,
+    Neo4j knowledge graphs, and Streamlit.}
+  \resumeItem{\textbf{RAG-Finance-Assistant:} Retrieval-Augmented Generation system using LangChain and LLMs for context-aware
+    question-answering across complex financial documents.}
+  \resumeItem{\textbf{Epidemiological Forecasting:} Ensemble epidemic forecasting framework coupling climate signals with disease time series.}
+  \resumeItem{\textbf{World Cup 2026 Atlas:} React and TypeScript tournament archive with automated data refresh, standings, bracket,
+    and custom SVG visualizations for all 104 matches.}
+  \resumeItem{\textbf{BatteryScope:} Native macOS battery diagnostics app in SwiftUI and IOKit with local history and configurable alerts.}
+  \resumeItem{\textbf{After Hours \& Ember Coast:} Online multiplayer party games with a twelve-chapter game-theory course, and an
+    island-economy strategy game with explainable planning bots.}
+  \resumeItem{\textbf{Colorizing the Prokudin-Gorskii Collection:} Automated image alignment using an image pyramid search, three-stage
+    border removal, and MSE, NCC, and SSIM optimization.}
+  \resumeItem{\textbf{Learnable Image Alignment \& Blob Detection:} Learnable alignment via gradient descent and scale-space blob detection.}
+  \resumeItem{\textbf{LLM-from-Scratch:} GPT-style chatbot implemented from scratch in PyTorch, achieving 85\% response accuracy.}
+  \resumeItem{\textbf{SpamGuard \& Email Classifier:} Dual-layer spam detection with Naive Bayes and Bayesian networks (Scikit-learn,
+    NLTK), 89\% accuracy.}
+  \resumeItem{\textbf{Flight Delay Prediction:} Spark-based predictive models (Logistic Regression, Gradient Boosting, Decision Trees), 92\% accuracy.}
+  \resumeItem{\textbf{CIFAR-10 Image Classification (CNN):} Designed and trained CNNs, using confusion matrices to optimize accuracy.}
+  \resumeItem{\textbf{BanglaNERTransformer \& DrugSideEffectClassifier:} Transformer-based Bangla NER with Hugging Face; NLP pipeline for
+    classifying adverse drug reactions.}
+  \resumeItem{\textbf{Atterberg Limit Chart Generator:} Automated plotting tool for geotechnical soil classification using Python and Streamlit.}
+\bulletListEnd
+
+% ---------- activities ----------
+\section{Other Activities}
+\bulletList
+  \resumeDated{\textbf{Member and Research Mentor}, Bangladesh Student Research Initiative (BSRI) -- mentoring undergraduates in AI and data science research}{2024 -- Present}
+  \resumeDated{\textbf{Collaborator and Member}, Serious Data Science -- open research on applied ML and NLP}{2023 -- 2024}
+  \resumeDated{\textbf{Academic Counselor}, Bangladesh Mathematical Olympiad Committee (BDMO)}{2014 -- 2023}
+  \resumeDated{\textbf{General Secretary}, BUET Math Club -- Onuronon}{2013 -- 2014}
+  \resumeDated{\textbf{General Secretary}, Ramanujan Gonit Songho (RGS)}{2008 -- 2013}
+  \resumeDated{\textbf{BUET Unit Face Coordinator}, Engineering Students Association of Bangladesh (ESAB)}{2013 -- 2014}
+  \resumeDated{\textbf{Mentor, Trainer, Exam Controller}, Bangladesh Physics Olympiad (BPhO)}{2012 -- 2016}
+  \resumeDated{\textbf{Founder}, Project UpBright -- Parallel Math School for Secondary Students}{2019 -- 2020}
+  \resumeDated{\textbf{President \& Founding Member}, The Quest -- adventure and outdoor activities club}{2019 -- 2021}
+  \resumeDated{\textbf{Moderator}, banglatrek.org -- open-source trail mapping for the hill tracts of Bangladesh}{2013 -- 2016}
+\bulletListEnd
+
+\end{document}

@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
+import { Fragment, useEffect, useMemo, useState } from 'react'
 import type { CSSProperties, ReactNode } from 'react'
 import './App.css'
 
@@ -68,9 +68,8 @@ type GoalEvent = {
   baseMinute: number
 }
 
-const LIVE_API = 'https://worldcup26.ir/get'
 const views: { id: View; label: string }[] = [
-  { id: 'now', label: 'Now' },
+  { id: 'now', label: 'Final' },
   { id: 'matches', label: 'Matches' },
   { id: 'groups', label: 'Groups' },
   { id: 'bracket', label: 'Bracket' },
@@ -84,14 +83,30 @@ const trivia = [
   { category: 'Host nations', title: 'Three countries, one tournament', text: 'Canada, Mexico and the United States form the first three-nation World Cup hosting team.', tag: 'Hosts' },
   { category: 'Stadium history', title: 'Azteca makes history again', text: 'Mexico City’s iconic stadium becomes the first venue used at three men’s World Cups: 1970, 1986 and 2026.', tag: 'Venue' },
   { category: 'Tournament record', title: 'Brazil’s unbroken run', text: 'Brazil is the only nation to have appeared at every men’s World Cup and remains the record five-time champion.', tag: 'History' },
-  { category: 'Goals', title: 'The all-time benchmark', text: 'Miroslav Klose scored 16 World Cup goals across four tournaments, the long-standing men’s record.', tag: 'Record' },
+  { category: 'Goals', title: 'A new all-time benchmark', text: 'Kylian Mbappé finished 2026 with 22 career World Cup goals, passing Miroslav Klose’s long-standing record of 16 and winning a second straight Golden Boot.', tag: 'Record' },
   { category: 'Young legend', title: 'Pelé’s unmatched treble', text: 'Pelé remains the only player to win three World Cups and was only 17 when he won his first in 1958.', tag: 'Player' },
   { category: 'Fast start', title: 'Eleven seconds', text: 'Hakan Şükür scored the fastest goal in men’s World Cup history against South Korea in 2002.', tag: 'Record' },
   { category: 'Classic upset', title: 'The Miracle on Grass', text: 'The United States defeated heavily favored England 1–0 at the 1950 World Cup.', tag: 'Upset' },
   { category: 'Attendance', title: 'A record that survived expansion', text: 'The 1994 United States tournament drew about 3.59 million spectators, still the overall attendance benchmark.', tag: 'Fans' },
   { category: 'New pathway', title: 'Third place matters', text: 'The eight best third-placed teams join the top two from every group in the Round of 32.', tag: 'Format' },
   { category: 'Trophy', title: 'Six kilograms of gold', text: 'The current FIFA World Cup Trophy weighs 6.175 kilograms and is made from 18-carat gold.', tag: 'Trophy' },
-  { category: 'The final', title: 'New York New Jersey', text: 'The 2026 champion will be crowned on July 19 at New York New Jersey Stadium.', tag: 'Final' },
+  { category: 'The final', title: 'Spain, sixteen years later', text: 'Spain beat Argentina 1–0 after extra time at New York New Jersey Stadium on July 19. Ferran Torres scored in the 106th minute for a second title, sixteen years after the first.', tag: 'Final' },
+  { category: 'Scoreless ninety', title: 'Only the second time', text: 'The 2026 final was goalless after 90 minutes, something that had happened only once before, at USA 1994.', tag: 'Final' },
+  { category: 'Bronze', title: 'Ten goals for third place', text: 'England beat France 6–4 in Miami, the highest-scoring third-place match in World Cup history and England’s best finish since 1966.', tag: 'Record' },
+]
+
+const finalMoment = {
+  date: 'July 19, 2026',
+  venue: 'New York New Jersey Stadium',
+  scorer: 'Ferran Torres',
+  minute: 106,
+}
+
+const tournamentAwards = [
+  { award: 'Golden Ball', winner: 'Rodri', team: 'Spain', note: 'Best player of the tournament' },
+  { award: 'Golden Boot', winner: 'Kylian Mbappé', team: 'France', note: '10 goals, his second in a row' },
+  { award: 'Golden Glove', winner: 'Unai Simón', team: 'Spain', note: 'Conceded once all tournament' },
+  { award: 'Best Young Player', winner: 'Pau Cubarsí', team: 'Spain', note: 'The future of Spain’s back line' },
 ]
 
 const champions = [
@@ -101,8 +116,8 @@ const champions = [
   { nation: 'Argentina', titles: 3, years: '1978 · 1986 · 2022', color: '#7dd4ff' },
   { nation: 'France', titles: 2, years: '1998 · 2018', color: '#5f72ff' },
   { nation: 'Uruguay', titles: 2, years: '1930 · 1950', color: '#8ad7f8' },
+  { nation: 'Spain', titles: 2, years: '2010 · 2026', color: '#ff665c' },
   { nation: 'England', titles: 1, years: '1966', color: '#f4f6ef' },
-  { nation: 'Spain', titles: 1, years: '2010', color: '#ff665c' },
 ]
 
 const winnerTimeline = [
@@ -111,7 +126,7 @@ const winnerTimeline = [
   ['1970', 'Brazil'], ['1974', 'Germany'], ['1978', 'Argentina'], ['1982', 'Italy'],
   ['1986', 'Argentina'], ['1990', 'Germany'], ['1994', 'Brazil'], ['1998', 'France'],
   ['2002', 'Brazil'], ['2006', 'Italy'], ['2010', 'Spain'], ['2014', 'Germany'],
-  ['2018', 'France'], ['2022', 'Argentina'],
+  ['2018', 'France'], ['2022', 'Argentina'], ['2026', 'Spain'],
 ]
 
 const roundNames: Record<string, string> = {
@@ -284,16 +299,6 @@ async function loadFallback(): Promise<TournamentData> {
     fetchJson<{ groups: Group[] }>('./data/groups.json'),
     fetchJson<{ teams: Team[] }>('./data/teams.json'),
     fetchJson<{ stadiums: Stadium[] }>('./data/stadiums.json'),
-  ])
-  return { games: games.games, groups: groups.groups, teams: teams.teams, stadiums: stadiums.stadiums }
-}
-
-async function loadLive(): Promise<TournamentData> {
-  const [games, groups, teams, stadiums] = await Promise.all([
-    fetchJson<{ games: Game[] }>(`${LIVE_API}/games`),
-    fetchJson<{ groups: Group[] }>(`${LIVE_API}/groups`),
-    fetchJson<{ teams: Team[] }>(`${LIVE_API}/teams`),
-    fetchJson<{ stadiums: Stadium[] }>(`${LIVE_API}/stadiums`),
   ])
   return { games: games.games, groups: groups.groups, teams: teams.teams, stadiums: stadiums.stadiums }
 }
@@ -584,7 +589,7 @@ function GoalAtlasLite({ games, data }: { games: Game[]; data: TournamentData })
     <section className="goal-atlas-lite">
       <header>
         <span>Goal Atlas Lite</span>
-        <h3>Goals we can verify from the current match feed</h3>
+        <h3>Goals we can verify from the match feed</h3>
         <p>Score fields power team, stage and venue totals. Scorer-minute strings cover {goalEvents.length} of {totalGoals} goals for the timing view.</p>
       </header>
       <div className="goal-atlas-metrics">
@@ -669,7 +674,7 @@ function WinnersRibbon() {
 
 function RecordGlyphs() {
   const records = [
-    { value: 16, unit: 'goals', label: 'Miroslav Klose', note: 'All-time scoring record', icon: '◎' },
+    { value: 22, unit: 'goals', label: 'Kylian Mbappé', note: 'All-time scoring record (2026)', icon: '◎' },
     { value: 3, unit: 'titles', label: 'Pelé', note: 'Only player with three', icon: '✦' },
     { value: 11, unit: 'seconds', label: 'Hakan Şükür', note: 'Fastest World Cup goal', icon: '↯' },
     { value: 13, unit: 'goals', label: 'France 1958', note: 'Just Fontaine in one edition', icon: '◉' },
@@ -680,66 +685,62 @@ function RecordGlyphs() {
 function App() {
   const [view, setView] = useState<View>('now')
   const [data, setData] = useState<TournamentData | null>(null)
-  const [source, setSource] = useState<'live' | 'snapshot'>('snapshot')
-  const [updatedAt, setUpdatedAt] = useState<Date | null>(null)
+  const [loadError, setLoadError] = useState(false)
   const [query, setQuery] = useState('')
-  const [matchFilter, setMatchFilter] = useState<'all' | 'completed' | 'upcoming'>('all')
+  const [matchFilter, setMatchFilter] = useState<'all' | 'group' | 'knockout'>('all')
   const [selectedTeam, setSelectedTeam] = useState<string>('')
-  const hasData = useRef(false)
 
+  // The tournament is over, so the bundled final snapshot is the source of truth.
   useEffect(() => {
     let active = true
-    const refresh = async () => {
-      try {
-        const live = await loadLive()
-        if (active) {
-          setData(live)
-          hasData.current = true
-          setSource('live')
-          setUpdatedAt(new Date())
-        }
-      } catch {
-        if (!hasData.current) {
-          const fallback = await loadFallback()
-          if (active) {
-            setData(fallback)
-            hasData.current = true
-            setSource('snapshot')
-            setUpdatedAt(new Date())
-          }
-        }
-      }
-    }
-    refresh()
-    const interval = window.setInterval(refresh, 60_000)
-    return () => {
-      active = false
-      window.clearInterval(interval)
-    }
+    loadFallback()
+      .then((snapshot) => { if (active) setData(snapshot) })
+      .catch(() => { if (active) setLoadError(true) })
+    return () => { active = false }
   }, [])
 
   const computed = useMemo(() => {
     if (!data) return null
     const sortedGames = [...data.games].sort((a, b) => gameDate(a, data.stadiums).getTime() - gameDate(b, data.stadiums).getTime())
     const completed = sortedGames.filter(isFinished)
-    const live = sortedGames.filter(isLive)
-    const upcoming = sortedGames.filter((game) => !isFinished(game) && !isLive(game))
-    const recent = [...completed].reverse().slice(0, 4)
-    const next = upcoming.slice(0, 6)
+    const finalWeekend = completed.filter((game) => ['sf', 'third', 'final'].includes(game.type))
     const goals = completed.reduce((sum, game) => sum + number(game.home_score) + number(game.away_score), 0)
     const thirdPlace = data.groups
       .map((group) => ({ ...group.teams[2], group: group.name }))
       .sort((a, b) => number(b.pts) - number(a.pts) || number(b.gd) - number(a.gd) || number(b.gf) - number(a.gf))
-    return { sortedGames, completed, live, upcoming, recent, next, goals, thirdPlace }
+    const winnerOf = (game?: Game) => {
+      if (!game) return undefined
+      const homeWins = number(game.home_score) > number(game.away_score)
+        || (game.home_score === game.away_score && number(game.home_penalty_score) > number(game.away_penalty_score))
+      return homeWins
+        ? { id: game.home_team_id, name: displayTeamName(game, 'home', data.teams), loserId: game.away_team_id, loser: displayTeamName(game, 'away', data.teams) }
+        : { id: game.away_team_id, name: displayTeamName(game, 'away', data.teams), loserId: game.home_team_id, loser: displayTeamName(game, 'home', data.teams) }
+    }
+    const finalGame = sortedGames.find((game) => game.type === 'final')
+    const champion = winnerOf(finalGame)
+    const bronze = winnerOf(sortedGames.find((game) => game.type === 'third'))
+    const championPath = champion
+      ? sortedGames.filter((game) => game.type !== 'group' && (game.home_team_id === champion.id || game.away_team_id === champion.id))
+      : []
+    const championGroup = champion
+      ? sortedGames.filter((game) => game.type === 'group' && (game.home_team_id === champion.id || game.away_team_id === champion.id))
+      : []
+    const championRecord = [...championGroup, ...championPath].reduce((record, game) => {
+      const isHome = game.home_team_id === champion?.id
+      record.for += number(isHome ? game.home_score : game.away_score)
+      record.against += number(isHome ? game.away_score : game.home_score)
+      return record
+    }, { for: 0, against: 0 })
+    return { sortedGames, completed, finalWeekend, goals, thirdPlace, finalGame, champion, bronze, championPath, championRecord, played: championGroup.length + championPath.length }
   }, [data])
 
   if (!data || !computed) {
-    return <main className="loading-screen"><div className="ball-loader">26</div><p>Building the tournament picture…</p></main>
+    return <main className="loading-screen"><div className="ball-loader">26</div><p>{loadError ? 'The tournament archive could not be loaded. Please refresh the page.' : 'Building the tournament picture…'}</p></main>
   }
 
   const visibleMatches = computed.sortedGames.filter((game) => {
-    if (matchFilter === 'completed' && !isFinished(game)) return false
-    if (matchFilter === 'upcoming' && (isFinished(game) || isLive(game))) return false
+    if (matchFilter === 'group' && game.type !== 'group') return false
+    if (matchFilter === 'knockout' && game.type === 'group') return false
     const haystack = `${displayTeamName(game, 'home', data.teams)} ${displayTeamName(game, 'away', data.teams)} ${game.home_team_label || ''} ${game.away_team_label || ''} ${game.group}`.toLowerCase()
     return haystack.includes(query.toLowerCase())
   })
@@ -753,20 +754,13 @@ function App() {
     ? computed.sortedGames.filter((game) => game.home_team_id === selectedTeam || game.away_team_id === selectedTeam)
     : []
 
-  const remainingMatches = Math.max(104 - computed.completed.length, 0)
-  const currentMatchNumber = Math.min(computed.completed.length + computed.live.length + 1, 104)
-  const currentStage = computed.completed.length >= 104
-    ? 'Tournament complete'
-    : computed.completed.length >= 102
-      ? 'Final weekend'
-      : computed.completed.length < 72
-        ? 'Group stage'
-        : 'Knockout stage'
-  const thirdPlaceEyebrow = computed.completed.length >= 72 ? 'Group-stage record' : 'Qualification watch'
-  const thirdPlaceTitle = computed.completed.length >= 72 ? 'The best third-place finishers' : 'The third-place line'
-  const thirdPlaceCopy = computed.completed.length >= 72
-    ? 'The table that decided the final eight Round of 32 places.'
-    : 'Eight of the twelve third-placed teams advance.'
+  const { champion, bronze, finalGame } = computed
+  const titles = champions.find((item) => item.nation === champion?.name)?.titles
+  const podium = champion && bronze ? [
+    { place: 'Champion', medal: '1', id: champion.id, name: champion.name },
+    { place: 'Runner-up', medal: '2', id: champion.loserId, name: champion.loser },
+    { place: 'Third place', medal: '3', id: bronze.id, name: bronze.name },
+  ] : []
 
   return (
     <div className="app-shell">
@@ -781,8 +775,8 @@ function App() {
           ))}
         </nav>
         <div className="header-status">
-          <span className={source === 'live' ? 'status-dot' : 'status-dot status-dot--stale'} />
-          <div><strong>{source === 'live' ? 'Auto-updating' : 'Snapshot mode'}</strong><small>{updatedAt ? `Checked ${updatedAt.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}` : 'Connecting'}</small></div>
+          <span className="status-dot status-dot--final" />
+          <div><strong>Final archive</strong><small>All {computed.completed.length} results</small></div>
         </div>
       </header>
 
@@ -791,58 +785,84 @@ function App() {
           <>
             <section className="hero-panel">
               <div className="hero-copy">
-                <div className="stage-pill"><span /> {currentStage} · Match {currentMatchNumber} of 104</div>
-                <p className="kicker">The tournament, explained visually</p>
-                <h1>See what matters <em>right now.</em></h1>
-                <p className="hero-lede">Recent results, the next kickoffs, bracket paths and the stories behind the world’s biggest football tournament.</p>
+                <div className="stage-pill"><span /> Tournament complete · {computed.completed.length} of 104 matches</div>
+                <p className="kicker">{finalMoment.date} · {finalMoment.venue}</p>
+                <h1>{champion?.name ?? 'The champion'} are <em>world champions.</em></h1>
+                <p className="hero-lede">
+                  {champion?.name} beat {champion?.loser} {finalGame ? `${Math.max(number(finalGame.home_score), number(finalGame.away_score))}–${Math.min(number(finalGame.home_score), number(finalGame.away_score))}` : ''} after extra time in the final, with {finalMoment.scorer} scoring in the {finalMoment.minute}th minute, to win a second World Cup sixteen years after the first.
+                  {bronze ? ` ${bronze.name} took bronze with a 6–4 win over ${bronze.loser}.` : ''}
+                </p>
                 <div className="hero-actions">
-                  <button onClick={() => setView('matches')}>Explore all matches</button>
-                  <button className="secondary" onClick={() => setView('groups')}>Check qualification</button>
+                  <button onClick={() => setView('bracket')}>Follow the knockout path</button>
+                  <button className="secondary" onClick={() => setView('matches')}>Relive all 104 matches</button>
                 </div>
               </div>
-              <div className="hero-visual" aria-label="Tournament completion">
+              <div className="hero-visual" aria-label={`Final: ${champion?.name} 1, ${champion?.loser} 0, after extra time`}>
                 <div className="orbit orbit--one" />
                 <div className="orbit orbit--two" />
-                <div className="hero-ball">
-                  <span>{Math.round((computed.completed.length / 104) * 100)}%</span>
-                  <small>complete</small>
+                <div className="hero-ball hero-ball--champion">
+                  {champion && teamFlag(champion.id, data.teams) && <img src={teamFlag(champion.id, data.teams)} alt="" />}
+                  <span>{finalGame ? `${number(finalGame.home_score)}–${number(finalGame.away_score)}` : ''}</span>
+                  <small>a.e.t. · {finalMoment.scorer} {finalMoment.minute}′</small>
                 </div>
-                <div className="hero-caption"><strong>{remainingMatches}</strong><span>matches remain</span></div>
+                <div className="hero-caption"><strong>{titles ?? ''} titles</strong><span>{champions.find((item) => item.nation === champion?.name)?.years}</span></div>
               </div>
             </section>
 
-            <section className="pulse-grid" aria-label="Tournament pulse">
+            <section className="pulse-grid" aria-label="Tournament totals">
               {[
-                ['Matches played', computed.completed.length, 'of 104'],
+                ['Matches played', computed.completed.length, 'the first 48-team World Cup'],
                 ['Goals scored', computed.goals, `${(computed.goals / Math.max(computed.completed.length, 1)).toFixed(2)} per match`],
-                ['Teams', 48, 'across 12 groups'],
+                [`${champion?.name ?? 'Champion'}’s run`, `${computed.championRecord.for}–${computed.championRecord.against}`, `goals for and against in ${computed.played} matches`],
                 ['Host cities', 16, 'in three countries'],
               ].map(([label, value, note]) => (
                 <article key={String(label)}><span>{label}</span><strong>{value}</strong><small>{note}</small></article>
               ))}
             </section>
 
-            {computed.live.length > 0 && (
-              <section className="content-section">
-                <SectionHeading eyebrow="Live now" title="The ball is moving" copy="Scores refresh automatically every minute." />
-                <div className="match-grid">{computed.live.map((game) => <MatchCard key={game.id} game={game} data={data} featured />)}</div>
-              </section>
-            )}
+            <section className="content-section">
+              <SectionHeading eyebrow="Podium" title="How it finished" copy="Forty-eight teams started on June 11. These three were still standing on the final weekend." />
+              <div className="podium-grid">
+                {podium.map((row) => (
+                  <article key={row.place} className={`podium-card podium-card--${row.medal}`}>
+                    <span>{row.medal}</span>
+                    {teamFlag(row.id, data.teams) && <img src={teamFlag(row.id, data.teams)} alt="" />}
+                    <small>{row.place}</small>
+                    <strong>{row.name}</strong>
+                  </article>
+                ))}
+              </div>
+            </section>
 
             <section className="content-section">
-              <SectionHeading eyebrow="Latest" title="The most recent results" copy="Completed matches stay at the top so the tournament always opens with what just happened." />
-              <div className="match-grid">{computed.recent.map((game) => <MatchCard key={game.id} game={game} data={data} featured />)}</div>
+              <SectionHeading eyebrow="Awards" title="The tournament’s best" copy="FIFA’s individual awards for the 2026 World Cup." />
+              <div className="awards-grid">
+                {tournamentAwards.map((item) => {
+                  const team = data.teams.find((entry) => entry.name_en === item.team)
+                  return (
+                    <article key={item.award} className="award-card">
+                      <span>{item.award}</span>
+                      <strong>{item.winner}</strong>
+                      <div>{team?.flag && <img src={team.flag} alt="" />}<small>{item.team}</small></div>
+                      <p>{item.note}</p>
+                    </article>
+                  )
+                })}
+              </div>
+            </section>
+
+            <section className="content-section">
+              <SectionHeading eyebrow="Final weekend" title="The last four matches" copy="Two semifinals, a ten-goal third-place match, and a final settled in extra time." />
+              <div className="match-grid">{computed.finalWeekend.map((game) => <MatchCard key={game.id} game={game} data={data} featured />)}</div>
             </section>
 
             <section className="content-section split-section">
               <div>
-                <SectionHeading eyebrow="Up next" title="The next kickoffs" copy="Times are automatically shown in your device timezone." />
-                {computed.next.length ? (
-                  <div className="match-stack">{computed.next.slice(0, 4).map((game) => <MatchCard key={game.id} game={game} data={data} />)}</div>
-                ) : <p className="empty-state">No remaining scheduled matches.</p>}
+                <SectionHeading eyebrow="Road to the title" title={`${champion?.name ?? 'The champion'}’s knockout run`} copy="Five knockout wins from the Round of 32 to the final." />
+                <div className="match-stack">{computed.championPath.map((game) => <MatchCard key={game.id} game={game} data={data} />)}</div>
               </div>
               <div>
-                <SectionHeading eyebrow={thirdPlaceEyebrow} title={thirdPlaceTitle} copy={thirdPlaceCopy} />
+                <SectionHeading eyebrow="Group-stage record" title="The best third-place finishers" copy="The table that decided the last eight Round of 32 places." />
                 <article className="third-place-card">
                   {computed.thirdPlace.map((row, index) => {
                     const team = data.teams.find((item) => item.id === row.team_id)
@@ -865,7 +885,7 @@ function App() {
             </section>
 
             <section className="story-banner">
-              <div><span>Today’s piece of history</span><h2>{trivia[2].title}</h2><p>{trivia[2].text}</p></div>
+              <div><span>A record from 2026</span><h2>{trivia[13].title}</h2><p>{trivia[13].text}</p></div>
               <button onClick={() => setView('trivia')}>Discover more stories</button>
             </section>
           </>
@@ -873,11 +893,11 @@ function App() {
 
         {view === 'matches' && (
           <section className="page-section">
-            <SectionHeading eyebrow="104 matches" title="Every fixture and result" copy="Search by team or group. All kickoff times are converted to your local timezone." />
+            <SectionHeading eyebrow="104 matches" title="Every fixture and result" copy="Search by team or group. Kickoff times are shown in your local timezone." />
             <div className="toolbar">
               <label><span className="sr-only">Search matches</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search a team or group…" /></label>
               <div className="segmented">
-                {(['all', 'completed', 'upcoming'] as const).map((filter) => <button key={filter} className={matchFilter === filter ? 'active' : ''} onClick={() => setMatchFilter(filter)}>{filter}</button>)}
+                {(['all', 'group', 'knockout'] as const).map((filter) => <button key={filter} className={matchFilter === filter ? 'active' : ''} onClick={() => setMatchFilter(filter)}>{filter}</button>)}
               </div>
             </div>
             <div className="match-grid match-grid--archive">{visibleMatches.map((game) => <MatchCard key={game.id} game={game} data={data} />)}</div>
@@ -905,7 +925,7 @@ function App() {
 
         {view === 'bracket' && (
           <section className="page-section">
-            <SectionHeading eyebrow="Road to July 19" title="The knockout path" copy="Confirmed teams populate automatically as the tournament advances." />
+            <SectionHeading eyebrow="Round of 32 to final" title="The knockout path" copy="Thirty-two teams, five rounds, one champion." />
             <div className="bracket">
               {['r32', 'r16', 'qf', 'sf', 'third', 'final'].map((round) => {
                 const games = data.games.filter((game) => game.type === round || (round === 'r32' && game.type === 'round32') || (round === 'r16' && game.type === 'round16'))
@@ -922,8 +942,7 @@ function App() {
                         </small>
                       </article>
                     ))}
-                    {!games.length && <p>Matchups will appear when qualification is resolved.</p>}
-                  </div>
+                                      </div>
                 )
               })}
             </div>
@@ -961,7 +980,7 @@ function App() {
 
         {view === 'stats' && (
           <section className="page-section">
-            <SectionHeading eyebrow="Tournament pulse" title="The World Cup by the numbers" copy="A live statistical overview generated from completed matches." />
+            <SectionHeading eyebrow="Tournament pulse" title="The World Cup by the numbers" copy="The complete statistical picture of all 104 matches." />
             <div className="stat-hero-grid">
               <article><span>Total goals</span><strong>{computed.goals}</strong><small>{(computed.goals / Math.max(computed.completed.length, 1)).toFixed(2)} per match</small></article>
               <article><span>Biggest score</span><strong>{Math.max(...computed.completed.map((game) => number(game.home_score) + number(game.away_score)), 0)}</strong><small>goals in one match</small></article>
@@ -969,12 +988,12 @@ function App() {
               <article><span>Draws</span><strong>{computed.completed.filter((game) => game.home_score === game.away_score).length}</strong><small>after regulation</small></article>
             </div>
             <div className="visualization-intro">
-              <span>Live visual lab</span>
+              <span>Visual lab</span>
               <h2>Read the tournament as shapes, movement and pressure.</h2>
-              <p>Every chart below recalculates when results or standings change. Hover or tap chart marks for exact values.</p>
+              <p>Every chart is generated from the final results. Hover or tap chart marks for exact values.</p>
             </div>
             <div className="viz-grid">
-              <ChartFrame eyebrow="Tournament rhythm" title="Goals by match day" copy="The peaks and quiet days of the tournament so far." className="viz-card--wide">
+              <ChartFrame eyebrow="Tournament rhythm" title="Goals by match day" copy="The peaks and quiet days of the tournament." className="viz-card--wide">
                 <GoalTimeline games={computed.completed} stadiums={data.stadiums} />
               </ChartFrame>
               <ChartFrame eyebrow="Score fingerprints" title="Every final score" copy="Darker cells represent scorelines that have happened more often.">
@@ -986,10 +1005,10 @@ function App() {
               <ChartFrame eyebrow="Team balance" title="Scoring versus conceding" copy="Each group uses mirrored bars: goals conceded extend left in gold, while goals scored extend right in green. Every panel shares one scale, making comparisons direct." className="viz-card--wide">
                 <GroupBalancePanels groups={data.groups} teams={data.teams} />
               </ChartFrame>
-              <ChartFrame eyebrow="The host footprint" title="Matches by stadium" copy="Green shows each venue’s full tournament assignment; gold shows matches already played." className="viz-card--wide">
+              <ChartFrame eyebrow="The host footprint" title="Matches by stadium" copy="How the 104 matches were shared across the sixteen host venues." className="viz-card--wide">
                 <StadiumLoad games={data.games} stadiums={data.stadiums} />
               </ChartFrame>
-              <ChartFrame eyebrow="Group comparison" title="Goals by group" copy="A compact view of which groups are producing the most goals.">
+              <ChartFrame eyebrow="Group comparison" title="Goals by group" copy="A compact view of which groups produced the most goals.">
                 <div className="bar-chart">
                   {'ABCDEFGHIJKL'.split('').map((groupName) => {
                     const games = computed.completed.filter((game) => game.group === groupName)
@@ -1008,10 +1027,10 @@ function App() {
           <section className="page-section">
             <SectionHeading eyebrow="Stories behind the numbers" title="World Cup trivia atlas" copy="Records, firsts, famous moments and details that make each match richer." />
             <div className="trivia-visuals">
-              <ChartFrame eyebrow="The champions’ orbit" title="Who owns World Cup history?" copy="All 22 completed tournaments divided among only eight champions." className="viz-card--wide">
+              <ChartFrame eyebrow="The champions’ orbit" title="Who owns World Cup history?" copy="All 23 tournaments divided among only eight champions." className="viz-card--wide">
                 <ChampionsOrbit />
               </ChartFrame>
-              <ChartFrame eyebrow="1930—2022" title="The winners ribbon" copy="A continuous visual history from Uruguay’s first triumph to Argentina’s third.">
+              <ChartFrame eyebrow="1930—2026" title="The winners ribbon" copy="A continuous visual history from Uruguay’s first triumph to Spain’s second.">
                 <WinnersRibbon />
               </ChartFrame>
               <ChartFrame eyebrow="Record book" title="Four numbers that define the tournament" copy="Iconic benchmarks from scoring, speed and individual achievement.">
@@ -1036,7 +1055,7 @@ function App() {
 
       <footer>
         <div><strong>World Cup Atlas 2026</strong><p>A personal, data-centered tournament guide by Kamruzzaman Kamrul.</p></div>
-        <div><span>Data status</span><p>Community live feed with a bundled fallback snapshot. Official-provider integration is the next infrastructure phase.</p></div>
+        <div><span>Data status</span><p>Final archive of all 104 matches. Results and awards were checked against published match reports; scorer lists come from a community feed and may be incomplete.</p></div>
         <a href="../index.html">Back to Kamrul’s main site</a>
       </footer>
     </div>
