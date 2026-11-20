@@ -609,7 +609,6 @@ h1, h2, h3, h4, h5 {
 .treks-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; }
 .travel-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 .stack-list { display: flex; flex-direction: column; gap: 0.5rem; }
-.lab-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; }
 
 /* ═══════════════════════════════════════════════════
    CONTACT
@@ -905,7 +904,6 @@ h1, h2, h3, h4, h5 {
   .life-grid { grid-template-columns: 1fr; gap: 2rem; }
   .shifu-card { grid-template-columns: 1fr; }
   .shifu-card img { width: 100%; height: 200px; }
-  .lab-grid,
   .project-card-featured--wide,
   .spotify-project-hero-inner,
   .mountains-intro-grid,
